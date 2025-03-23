@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { logo } from '../assets';
+import logo from '../assets/logo.svg';
 import { cn } from '@/lib/utils';
 
 const Navbar = () => {

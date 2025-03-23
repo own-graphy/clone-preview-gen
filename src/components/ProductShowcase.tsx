@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { product1, product2, product3 } from '../assets';
 
 const ProductShowcase = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -14,19 +13,19 @@ const ProductShowcase = () => {
       title: "Design Studio",
       description: "Our flagship design tool with everything you need to create stunning visuals, interfaces, and graphics.",
       features: ["Advanced vector editing", "Smart objects", "Real-time collaboration", "Cloud storage"],
-      image: product1
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475"
     },
     {
       title: "Prototype Pro",
       description: "Create interactive prototypes that look and feel like the real thing. Test ideas faster than ever before.",
       features: ["Interactive components", "Animation presets", "User flow mapping", "Feedback collection"],
-      image: product2
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
     },
     {
       title: "Analytics Hub",
       description: "Gain valuable insights about your designs with comprehensive analytics and user testing tools.",
       features: ["Heat maps", "User session recordings", "A/B testing", "Performance metrics"],
-      image: product3
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
     }
   ];
 

@@ -78,7 +78,7 @@ const Hero = () => {
             <div className="absolute -inset-4 bg-blue-100 rounded-3xl filter blur-3xl opacity-30 animate-pulse-subtle"></div>
             <img 
               ref={imageRef}
-              src={hero} 
+              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
               alt="Design Interface" 
               className="relative rounded-2xl shadow-soft opacity-0 w-full object-cover"
               onError={(e) => {
