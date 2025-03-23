@@ -30,10 +30,6 @@ export default {
         ],
       },
       colors: {
-        darkGray: "#1A1F2C",
-        charcoal: "#403E43",
-        darkCharcoal: "#221F26",
-        darkBlack: "#0A0A0A",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
