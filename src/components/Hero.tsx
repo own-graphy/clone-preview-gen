@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
-import { hero } from '../assets';
+// Remove the hero import since it's no longer available
+// We're using a direct URL instead
 
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
