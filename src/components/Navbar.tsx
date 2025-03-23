@@ -1,96 +1,119 @@
 
 import React, { useState, useEffect } from 'react';
-import logo from '../assets/logo.svg';
-import { cn } from '@/lib/utils';
+import { Link, useLocation } from 'react-router-dom';
+import { logo } from '../assets';
+import { Menu, X } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
   return (
-    <header 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-default", 
-        scrolled ? "glass py-3" : "py-6 bg-transparent"
-      )}
-    >
-      <div className="container px-4 md:px-6 flex items-center justify-between">
-        <a href="/" className="flex items-center space-x-2">
-          <img src={logo} alt="Logo" className="w-8 h-8" />
-          <span className="text-lg font-medium">Graphix</span>
-        </a>
-        
-        <nav className="hidden md:flex items-center space-x-8">
-          {["Products", "Features", "Pricing", "Support"].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
-              className="text-sm text-muted-foreground transition-default hover:text-foreground"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
-        
-        <div className="hidden md:flex items-center space-x-4">
-          <button className="text-sm font-medium transition-default hover:text-primary">
-            Sign In
-          </button>
-          <button className="text-sm font-medium bg-primary text-white px-4 py-2 rounded-full transition-default hover:bg-primary/90">
-            Try Free
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between py-4">
+          <Link to="/" className="flex items-center space-x-2">
+            <img src={logo} alt="Graphix" className="h-8 w-auto" />
+            <span className="font-semibold text-xl text-gray-900">Graphix</span>
+          </Link>
+          
+          {/* Desktop Menu */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <NavLink to="/" label="Home" currentPath={location.pathname} />
+            <NavLink to="/about" label="About" currentPath={location.pathname} />
+            <NavLink to="/services" label="Services" currentPath={location.pathname} />
+            <NavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
+            <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
+          </nav>
+          
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={toggleMenu} 
+            className="md:hidden text-gray-700 focus:outline-none"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-        
-        <button 
-          className="md:hidden text-foreground"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {mobileMenuOpen ? (
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            ) : (
-              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            )}
-          </svg>
-        </button>
       </div>
       
-      {/* Mobile menu */}
-      <div className={cn(
-        "fixed inset-0 z-40 glass-subtle transition-default", 
-        mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      )}>
-        <div className="flex flex-col h-full pt-24 px-6 space-y-8">
-          {["Products", "Features", "Pricing", "Support"].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
-              className="text-xl font-medium py-2 border-b border-gray-100 dark:border-gray-800 hover:text-primary"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item}
-            </a>
-          ))}
-          <div className="flex flex-col space-y-4 pt-4">
-            <button className="text-lg font-medium transition-default hover:text-primary">
-              Sign In
-            </button>
-            <button className="text-lg font-medium bg-primary text-white px-6 py-3 rounded-full transition-default hover:bg-primary/90">
-              Try Free
-            </button>
+      {/* Mobile Menu */}
+      <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+        <div className="container mx-auto px-4 bg-white shadow-lg rounded-b-lg">
+          <div className="flex flex-col space-y-3 py-4">
+            <MobileNavLink to="/" label="Home" currentPath={location.pathname} />
+            <MobileNavLink to="/about" label="About" currentPath={location.pathname} />
+            <MobileNavLink to="/services" label="Services" currentPath={location.pathname} />
+            <MobileNavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
+            <MobileNavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </div>
         </div>
       </div>
     </header>
+  );
+};
+
+interface NavLinkProps {
+  to: string;
+  label: string;
+  currentPath: string;
+}
+
+const NavLink: React.FC<NavLinkProps> = ({ to, label, currentPath }) => {
+  const isActive = currentPath === to || (to !== '/' && currentPath.startsWith(to));
+  
+  return (
+    <Link
+      to={to}
+      className={`transition duration-300 font-medium hover:text-primary ${
+        isActive 
+          ? 'text-primary' 
+          : 'text-gray-700 hover:text-primary'
+      }`}
+    >
+      {label}
+    </Link>
+  );
+};
+
+const MobileNavLink: React.FC<NavLinkProps> = ({ to, label, currentPath }) => {
+  const isActive = currentPath === to || (to !== '/' && currentPath.startsWith(to));
+  
+  return (
+    <Link
+      to={to}
+      className={`block py-2 px-4 transition duration-300 hover:bg-gray-50 rounded ${
+        isActive 
+          ? 'font-medium text-primary bg-gray-50' 
+          : 'text-gray-700'
+      }`}
+    >
+      {label}
+    </Link>
   );
 };
 

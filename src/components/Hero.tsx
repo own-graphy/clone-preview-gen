@@ -1,7 +1,5 @@
 
 import React, { useEffect, useRef } from 'react';
-// Remove the hero import since it's no longer available
-// We're using a direct URL instead
 
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -47,7 +45,7 @@ const Hero = () => {
   return (
     <section className="relative py-20 md:py-32">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-50 via-white to-white"></div>
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="flex flex-col space-y-6">
             <h1 
