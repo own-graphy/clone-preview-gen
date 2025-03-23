@@ -2,7 +2,8 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle, Briefcase, BarChart, TrendingUp, Zap, Globe, Lightbulb } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Services: React.FC = () => {
   return (
@@ -14,138 +15,208 @@ const Services: React.FC = () => {
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Services</h1>
               <p className="text-lg text-gray-600">
-                Comprehensive design solutions tailored to your unique needs.
+                Comprehensive strategic consulting solutions tailored for MSMEs.
               </p>
+            </div>
+            
+            {/* Services Overview */}
+            <div className="mb-20">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="order-2 md:order-1">
+                  <h2 className="text-3xl font-bold mb-6">Strategic Consulting for Business Growth</h2>
+                  <p className="text-gray-600 mb-6">
+                    At Advizo Consulting, we specialize in helping Micro, Small, and Medium Enterprises (MSMEs) navigate challenges, identify opportunities, and implement strategic solutions that drive sustainable growth.
+                  </p>
+                  <p className="text-gray-600 mb-6">
+                    Our consultants bring deep industry expertise and proven methodologies to deliver tailored strategies that address your specific business needs. We focus on practical, implementable solutions with measurable results.
+                  </p>
+                  <div className="space-y-3">
+                    <ServiceFeature text="Data-driven strategy development" />
+                    <ServiceFeature text="Industry-specific expertise" />
+                    <ServiceFeature text="Implementation support" />
+                    <ServiceFeature text="Measurable business outcomes" />
+                  </div>
+                </div>
+                <div className="order-1 md:order-2 relative">
+                  <div className="absolute -inset-4 bg-indigo-100 rounded-3xl filter blur-3xl opacity-30"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80" 
+                    alt="Strategic consulting" 
+                    className="relative rounded-2xl shadow-soft w-full h-full object-cover"
+                  />
+                </div>
+              </div>
             </div>
             
             {/* Services Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-              <ServiceCard 
-                title="Web Design"
-                description="Custom website designs that are visually stunning, easy to use, and optimized for all devices."
-                image="https://images.unsplash.com/photo-1559028012-481c04fa702d"
-              />
-              <ServiceCard 
-                title="Logo Design"
-                description="Memorable, distinctive logos that capture your brand's essence and make a lasting impression."
-                image="https://images.unsplash.com/photo-1560157368-d461d92a6570"
-              />
-              <ServiceCard 
-                title="Branding"
-                description="Comprehensive brand identity systems that communicate your values and connect with your audience."
-                image="https://images.unsplash.com/photo-1558403194-611308249627"
-              />
-              <ServiceCard 
-                title="UI/UX Design"
-                description="User-centered interface designs that enhance usability and create seamless digital experiences."
-                image="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634"
-              />
-              <ServiceCard 
-                title="Print Design"
-                description="Eye-catching print materials that communicate your message effectively across various formats."
-                image="https://images.unsplash.com/photo-1571498664957-0a39676d2c81"
-              />
-              <ServiceCard 
-                title="Motion Graphics"
-                description="Dynamic animations and visual effects that bring your brand to life and engage your audience."
-                image="https://images.unsplash.com/photo-1601469090980-672ee2bb7058"
-              />
-            </div>
-            
-            {/* Process Section */}
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl font-bold mb-6">Our Design Process</h2>
-              <p className="text-lg text-gray-600 mb-12">
-                A proven approach to deliver exceptional results for every project.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-16 mb-20">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-blue-100 rounded-3xl filter blur-3xl opacity-30"></div>
-                <img 
-                  src="https://images.unsplash.com/photo-1535598745644-bc7913bb1a2a" 
-                  alt="Our design process" 
-                  className="relative rounded-2xl shadow-soft w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="space-y-8">
-                <ProcessStep 
-                  number="01"
-                  title="Discovery"
-                  description="We begin by understanding your business, goals, target audience, and project requirements through in-depth consultation."
-                />
-                <ProcessStep 
-                  number="02"
-                  title="Strategy"
-                  description="Based on our findings, we develop a strategic plan that outlines how design will address your specific challenges and objectives."
-                />
-                <ProcessStep 
-                  number="03"
-                  title="Design"
-                  description="Our creative team crafts multiple concepts, refining them based on your feedback until we achieve the perfect solution."
-                />
-                <ProcessStep 
-                  number="04"
-                  title="Implementation"
-                  description="We bring the approved designs to life, ensuring meticulous attention to detail and quality throughout the process."
-                />
-                <ProcessStep 
-                  number="05"
-                  title="Evaluation"
-                  description="After launch, we analyze the performance of our designs and make any necessary refinements to ensure optimal results."
-                />
-              </div>
-            </div>
-            
-            {/* Why Choose Us */}
-            <div className="bg-gray-50 rounded-2xl p-8 md:p-12 mb-20">
+            <div className="mb-20">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold mb-6">Why Choose Graphix</h2>
+                <h2 className="text-3xl font-bold mb-6">Our Core Services</h2>
                 <p className="text-lg text-gray-600">
-                  What sets us apart from other design agencies.
+                  Comprehensive solutions to address your most critical business challenges.
                 </p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-8">
-                <FeatureItem 
-                  title="Experienced Team"
-                  description="Our designers bring years of industry expertise across various sectors and design disciplines."
+                <ServiceCard 
+                  icon={<Zap className="h-8 w-8" />}
+                  title="Operational Excellence"
+                  description="Optimize your business operations to reduce costs, eliminate inefficiencies, and improve overall productivity. Our operational excellence services include:"
+                  features={[
+                    "Process optimization and redesign",
+                    "Lean implementation",
+                    "Supply chain optimization",
+                    "Quality management systems",
+                    "Operational cost reduction"
+                  ]}
                 />
-                <FeatureItem 
-                  title="Results-Driven Approach"
-                  description="We focus on creating designs that not only look great but also help you achieve your business objectives."
+                <ServiceCard 
+                  icon={<TrendingUp className="h-8 w-8" />}
+                  title="Revenue Growth"
+                  description="Accelerate your business growth with strategies to increase revenue, improve profit margins, and enhance customer value. Our revenue growth services include:"
+                  features={[
+                    "Sales strategy and optimization",
+                    "Pricing strategy and implementation",
+                    "Customer segmentation and targeting",
+                    "Channel development and management",
+                    "Customer retention programs"
+                  ]}
                 />
-                <FeatureItem 
-                  title="Collaborative Process"
-                  description="We work closely with you throughout the project, ensuring your vision is brought to life exactly as you imagined."
+                <ServiceCard 
+                  icon={<Globe className="h-8 w-8" />}
+                  title="Market Expansion"
+                  description="Expand your business into new markets with confidence through research-backed strategies and implementation support. Our market expansion services include:"
+                  features={[
+                    "Market opportunity assessment",
+                    "Competitive landscape analysis",
+                    "Market entry strategy",
+                    "Partnership and distribution models",
+                    "International expansion planning"
+                  ]}
                 />
-                <FeatureItem 
-                  title="Timely Delivery"
-                  description="We respect your timelines and consistently deliver high-quality work on schedule."
+                <ServiceCard 
+                  icon={<Lightbulb className="h-8 w-8" />}
+                  title="Innovation & Technology"
+                  description="Transform your business through innovation and strategic technology adoption to gain competitive advantage. Our innovation services include:"
+                  features={[
+                    "Digital transformation strategy",
+                    "Technology assessment and roadmap",
+                    "Product and service innovation",
+                    "Business model innovation",
+                    "Innovation culture development"
+                  ]}
                 />
-                <FeatureItem 
-                  title="Ongoing Support"
-                  description="Our relationship doesn't end when the project is delivered; we provide continued assistance and updates."
+              </div>
+            </div>
+            
+            {/* Specialized Services */}
+            <div className="mb-20">
+              <div className="max-w-3xl mx-auto text-center mb-12">
+                <h2 className="text-3xl font-bold mb-6">Specialized Services</h2>
+                <p className="text-lg text-gray-600">
+                  Additional consulting offerings to address specific business needs.
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                <SpecializedServiceCard 
+                  icon={<Briefcase className="h-6 w-6" />}
+                  title="Business Transformation"
+                  description="End-to-end transformation programs to fundamentally change how your business operates and competes in the market."
                 />
-                <FeatureItem 
-                  title="Competitive Pricing"
-                  description="We offer excellent value without compromising on quality, with transparent pricing and no hidden costs."
+                <SpecializedServiceCard 
+                  icon={<BarChart className="h-6 w-6" />}
+                  title="Data Analytics"
+                  description="Turn your business data into actionable insights with our analytics services and data-driven decision frameworks."
                 />
+                <SpecializedServiceCard 
+                  icon={<CheckCircle className="h-6 w-6" />}
+                  title="Strategic Planning"
+                  description="Develop comprehensive strategic plans to guide your business toward sustainable growth and long-term success."
+                />
+              </div>
+            </div>
+            
+            {/* Our Approach */}
+            <div className="bg-gray-50 rounded-2xl p-8 md:p-12 mb-20">
+              <div className="max-w-3xl mx-auto text-center mb-12">
+                <h2 className="text-3xl font-bold mb-6">Our Consulting Approach</h2>
+                <p className="text-lg text-gray-600">
+                  A proven methodology that delivers measurable results for your business.
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-16">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-indigo-100 rounded-3xl filter blur-3xl opacity-30"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1535598745644-bc7913bb1a2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80" 
+                    alt="Our consulting approach" 
+                    className="relative rounded-2xl shadow-soft w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div className="space-y-8">
+                  <ProcessStep 
+                    number="01"
+                    title="Assess"
+                    description="We conduct a comprehensive assessment of your business, analyzing current state, challenges, opportunities, and market dynamics."
+                  />
+                  <ProcessStep 
+                    number="02"
+                    title="Strategize"
+                    description="Based on data-driven insights, we develop tailored strategies and detailed implementation plans to address your specific needs."
+                  />
+                  <ProcessStep 
+                    number="03"
+                    title="Implement"
+                    description="We work alongside your team to implement solutions, providing guidance, tools, and frameworks for successful execution."
+                  />
+                  <ProcessStep 
+                    number="04"
+                    title="Measure"
+                    description="We establish metrics and tracking systems to monitor progress and quantify the impact of our consulting initiatives."
+                  />
+                  <ProcessStep 
+                    number="05"
+                    title="Refine"
+                    description="We continuously evaluate results, gather feedback, and refine strategies to ensure optimal outcomes and sustainable improvements."
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Industries Served */}
+            <div className="mb-20">
+              <div className="max-w-3xl mx-auto text-center mb-12">
+                <h2 className="text-3xl font-bold mb-6">Industries We Serve</h2>
+                <p className="text-lg text-gray-600">
+                  We have deep expertise across multiple sectors, with consultants who understand your industry's specific challenges.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <IndustryCard name="Manufacturing" />
+                <IndustryCard name="Retail & E-commerce" />
+                <IndustryCard name="Technology" />
+                <IndustryCard name="Healthcare" />
+                <IndustryCard name="Financial Services" />
+                <IndustryCard name="Professional Services" />
+                <IndustryCard name="Education" />
+                <IndustryCard name="Hospitality" />
               </div>
             </div>
             
             {/* CTA Section */}
             <div className="text-center">
-              <h2 className="text-3xl font-bold mb-6">Ready to Start Your Project?</h2>
+              <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Business?</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-                Contact us today to discuss how we can help bring your vision to life with our expert design services.
+                Schedule a free consultation with our strategy experts to discuss how our services can address your specific business challenges.
               </p>
-              <a href="/contact" className="inline-flex items-center bg-primary text-white font-medium px-8 py-3 rounded-full hover:bg-primary/90 transition-default">
-                Get in Touch
-                <ArrowRight size={20} className="ml-2" />
-              </a>
+              <Link to="/contact" className="inline-flex items-center bg-primary text-white font-medium px-8 py-3 rounded-full hover:bg-primary/90 transition-default">
+                Book Your Free Consultation
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </div>
           </div>
         </section>
@@ -155,32 +226,60 @@ const Services: React.FC = () => {
   );
 };
 
-interface ServiceCardProps {
-  title: string;
-  description: string;
-  image: string;
+interface ServiceFeatureProps {
+  text: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image }) => {
+const ServiceFeature: React.FC<ServiceFeatureProps> = ({ text }) => {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group">
-      <div className="h-48 overflow-hidden">
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/007AFF/FFFFFF?text=Service';
-          }}
-        />
+    <div className="flex items-start gap-3">
+      <CheckCircle className="flex-shrink-0 text-primary h-5 w-5 mt-0.5" />
+      <span className="text-gray-700">{text}</span>
+    </div>
+  );
+};
+
+interface ServiceCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  features: string[];
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, features }) => {
+  return (
+    <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+      <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full text-primary mb-4">
+        {icon}
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-3">{title}</h3>
-        <p className="text-gray-600 mb-4">{description}</p>
-        <a href="#" className="text-primary font-medium inline-flex items-center">
-          Learn More <ArrowRight size={16} className="ml-1" />
-        </a>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <p className="text-gray-600 mb-4">{description}</p>
+      <ul className="space-y-2">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-start gap-3">
+            <CheckCircle className="flex-shrink-0 text-primary h-5 w-5 mt-0.5" />
+            <span className="text-gray-700">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+interface SpecializedServiceCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const SpecializedServiceCard: React.FC<SpecializedServiceCardProps> = ({ icon, title, description }) => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+      <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full text-primary mb-4">
+        {icon}
       </div>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <p className="text-gray-600">{description}</p>
     </div>
   );
 };
@@ -205,19 +304,14 @@ const ProcessStep: React.FC<ProcessStepProps> = ({ number, title, description })
   );
 };
 
-interface FeatureItemProps {
-  title: string;
-  description: string;
+interface IndustryCardProps {
+  name: string;
 }
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ title, description }) => {
+const IndustryCard: React.FC<IndustryCardProps> = ({ name }) => {
   return (
-    <div className="flex gap-4">
-      <CheckCircle className="flex-shrink-0 text-primary h-6 w-6 mt-1" />
-      <div>
-        <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
-      </div>
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 transition duration-300 text-center">
+      <h3 className="font-medium">{name}</h3>
     </div>
   );
 };

@@ -1,5 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -44,7 +46,7 @@ const Hero = () => {
 
   return (
     <section className="relative py-20 md:py-32">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-50 via-white to-white"></div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-50 via-white to-white"></div>
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="flex flex-col space-y-6">
@@ -52,37 +54,38 @@ const Hero = () => {
               ref={titleRef}
               className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance opacity-0"
             >
-              Design the future with precision
+              Strategic Solutions for Growing Businesses
             </h1>
             <p 
               ref={subtitleRef}
               className="text-xl text-muted-foreground max-w-md opacity-0"
             >
-              Create stunning designs with our intuitive platform. Simplify your workflow and bring your ideas to life.
+              Helping MSMEs transform challenges into growth opportunities through proven consulting strategies.
             </p>
             <div 
               ref={ctaRef}
               className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 opacity-0"
             >
-              <button className="bg-primary text-white font-medium px-8 py-3 rounded-full hover:bg-primary/90 transition-default">
-                Get Started
-              </button>
-              <button className="glass-subtle font-medium px-8 py-3 rounded-full hover:bg-secondary/50 transition-default">
-                Learn More
-              </button>
+              <Link to="/contact" className="bg-primary text-white font-medium px-8 py-3 rounded-full hover:bg-primary/90 transition-default inline-flex items-center">
+                Free Consultation
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+              <Link to="/services" className="glass-subtle font-medium px-8 py-3 rounded-full hover:bg-secondary/50 transition-default">
+                Our Services
+              </Link>
             </div>
           </div>
           
           <div className="relative">
-            <div className="absolute -inset-4 bg-blue-100 rounded-3xl filter blur-3xl opacity-30 animate-pulse-subtle"></div>
+            <div className="absolute -inset-4 bg-indigo-100 rounded-3xl filter blur-3xl opacity-30 animate-pulse-subtle"></div>
             <img 
               ref={imageRef}
-              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
-              alt="Design Interface" 
+              src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80" 
+              alt="Business Strategy Meeting" 
               className="relative rounded-2xl shadow-soft opacity-0 w-full object-cover"
               onError={(e) => {
                 // Fallback if image doesn't load
-                (e.target as HTMLImageElement).src = 'https://placehold.co/800x600/007AFF/FFFFFF?text=Design+Interface';
+                (e.target as HTMLImageElement).src = 'https://placehold.co/800x600/6366F1/FFFFFF?text=Business+Strategy';
               }}
             />
           </div>

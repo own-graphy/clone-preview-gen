@@ -38,16 +38,17 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt="Graphix" className="h-8 w-auto" />
-            <span className="font-semibold text-xl text-gray-900">Graphix</span>
+            <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
+            <span className="font-semibold text-xl text-gray-900">Advizo Consulting</span>
           </Link>
           
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center space-x-8">
             <NavLink to="/" label="Home" currentPath={location.pathname} />
+            <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
+            <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
             <NavLink to="/about" label="About" currentPath={location.pathname} />
-            <NavLink to="/services" label="Services" currentPath={location.pathname} />
-            <NavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
+            <NavLink to="/careers" label="Careers" currentPath={location.pathname} />
             <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </nav>
           
@@ -66,9 +67,10 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-4 bg-white shadow-lg rounded-b-lg">
           <div className="flex flex-col space-y-3 py-4">
             <MobileNavLink to="/" label="Home" currentPath={location.pathname} />
+            <MobileNavLink to="/services" label="Offerings" currentPath={location.pathname} />
+            <MobileNavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
             <MobileNavLink to="/about" label="About" currentPath={location.pathname} />
-            <MobileNavLink to="/services" label="Services" currentPath={location.pathname} />
-            <MobileNavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
+            <MobileNavLink to="/careers" label="Careers" currentPath={location.pathname} />
             <MobileNavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </div>
         </div>

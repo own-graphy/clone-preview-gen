@@ -2,14 +2,16 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { MapPin, Phone, Mail, Clock, Send, Check } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, Check, ArrowRight, MessageCircle } from 'lucide-react';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
-    name: '',
+    companyName: '',
+    industryType: '',
     email: '',
     phone: '',
-    subject: '',
     message: ''
   });
   
@@ -32,10 +34,10 @@ const Contact: React.FC = () => {
       
       // Reset form after submission
       setFormState({
-        name: '',
+        companyName: '',
+        industryType: '',
         email: '',
         phone: '',
-        subject: '',
         message: ''
       });
       
@@ -53,9 +55,9 @@ const Contact: React.FC = () => {
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h1>
               <p className="text-lg text-gray-600">
-                Have a question or want to work with us? Reach out and we'll get back to you as soon as we can.
+                Schedule a free consultation with our strategy experts or reach out with any questions.
               </p>
             </div>
             
@@ -63,117 +65,120 @@ const Contact: React.FC = () => {
               <ContactInfoCard 
                 icon={<MapPin className="h-6 w-6" />}
                 title="Our Location"
-                details={["123 Design Street", "Creative City, 10001", "United States"]}
+                details={["123 Business Avenue", "Corporate District, 10001", "United States"]}
               />
               <ContactInfoCard 
                 icon={<Phone className="h-6 w-6" />}
                 title="Phone & Email"
-                details={["+1 (555) 123-4567", "hello@graphix.com"]}
+                details={["+1 (555) 123-4567", "contact@advizoconsulting.com"]}
               />
               <ContactInfoCard 
                 icon={<Clock className="h-6 w-6" />}
                 title="Working Hours"
-                details={["Monday - Friday: 9am - 6pm", "Saturday: 10am - 2pm", "Sunday: Closed"]}
+                details={["Monday - Friday: 9am - 6pm", "Saturday: By appointment", "Sunday: Closed"]}
               />
             </div>
             
             <div className="grid md:grid-cols-2 gap-12 items-start">
               {/* Contact Form */}
               <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
+                <h2 className="text-2xl font-bold mb-6">Schedule a Free Consultation</h2>
                 
                 {isSubmitted ? (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
                     <div className="bg-green-100 rounded-full p-3 mb-4">
                       <Check className="h-8 w-8 text-green-600" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
+                    <h3 className="text-xl font-semibold mb-2">Request Submitted!</h3>
                     <p className="text-gray-600">
-                      Thanks for reaching out. We'll get back to you as soon as possible.
+                      Thanks for reaching out. One of our strategy consultants will contact you within 24 hours to schedule your free consultation.
                     </p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit}>
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                          Your Name <span className="text-red-500">*</span>
+                        <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
+                          Company Name <span className="text-red-500">*</span>
                         </label>
-                        <input
+                        <Input
                           type="text"
-                          id="name"
-                          name="name"
-                          value={formState.name}
+                          id="companyName"
+                          name="companyName"
+                          value={formState.companyName}
                           onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                          className="w-full"
                           required
                         />
                       </div>
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Email Address <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formState.email}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                          required
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                          Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={formState.phone}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                          Subject <span className="text-red-500">*</span>
+                        <label htmlFor="industryType" className="block text-sm font-medium text-gray-700 mb-1">
+                          Industry Type <span className="text-red-500">*</span>
                         </label>
                         <select
-                          id="subject"
-                          name="subject"
-                          value={formState.subject}
+                          id="industryType"
+                          name="industryType"
+                          value={formState.industryType}
                           onChange={handleChange}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                           required
                         >
-                          <option value="">Select a subject</option>
-                          <option value="General Inquiry">General Inquiry</option>
-                          <option value="Project Request">Project Request</option>
-                          <option value="Pricing Question">Pricing Question</option>
-                          <option value="Support">Support</option>
+                          <option value="">Select your industry</option>
+                          <option value="Manufacturing">Manufacturing</option>
+                          <option value="Retail">Retail</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Financial Services">Financial Services</option>
+                          <option value="Education">Education</option>
+                          <option value="Hospitality">Hospitality</option>
                           <option value="Other">Other</option>
                         </select>
                       </div>
                     </div>
                     
+                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                          Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formState.email}
+                          onChange={handleChange}
+                          className="w-full"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                          Phone Number <span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formState.phone}
+                          onChange={handleChange}
+                          className="w-full"
+                          required
+                        />
+                      </div>
+                    </div>
+                    
                     <div className="mb-6">
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                        Your Message <span className="text-red-500">*</span>
+                        Tell us about your business challenges
                       </label>
-                      <textarea
+                      <Textarea
                         id="message"
                         name="message"
                         rows={5}
                         value={formState.message}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                        required
-                      ></textarea>
+                        className="w-full"
+                      />
                     </div>
                     
                     <button
@@ -187,11 +192,11 @@ const Contact: React.FC = () => {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          Sending...
+                          Submitting...
                         </>
                       ) : (
                         <>
-                          Send Message
+                          Request Consultation
                           <Send size={16} className="ml-2" />
                         </>
                       )}
@@ -200,55 +205,43 @@ const Contact: React.FC = () => {
                 )}
               </div>
               
-              {/* Map */}
-              <div className="h-full min-h-[400px] rounded-xl overflow-hidden shadow-sm border border-gray-100">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30591910525!2d-74.25986682528057!3d40.69714941680757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sca!4v1655903436807!5m2!1sen!2sca"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Office Location"
-                ></iframe>
-              </div>
-            </div>
-            
-            {/* FAQ Section */}
-            <div className="mt-20">
-              <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
-                <p className="text-lg text-gray-600">
-                  Find answers to common questions about our services and process.
-                </p>
-              </div>
-              
-              <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
-                <FaqItem 
-                  question="How long does a typical project take?"
-                  answer="Project timelines vary depending on scope and complexity. A small website might take 2-4 weeks, while a comprehensive branding project could take 6-8 weeks. We'll provide a detailed timeline during our initial consultation."
-                />
-                <FaqItem 
-                  question="What is your pricing structure?"
-                  answer="We offer both project-based and retainer pricing models. Each quote is customized based on your specific requirements, project scope, and timeline. Contact us for a detailed estimate for your project."
-                />
-                <FaqItem 
-                  question="Do you offer ongoing support?"
-                  answer="Yes, we provide ongoing support and maintenance packages for our clients. These can include regular updates, content changes, performance monitoring, and technical support."
-                />
-                <FaqItem 
-                  question="How do we get started on a project?"
-                  answer="The process begins with an initial consultation where we discuss your goals and requirements. After that, we'll provide a proposal and quote. Once approved, we'll begin with the discovery phase of our design process."
-                />
-                <FaqItem 
-                  question="Do you work with clients remotely?"
-                  answer="Absolutely! We work with clients worldwide. We use video conferencing, collaborative tools, and regular updates to ensure smooth communication throughout the project, no matter where you're located."
-                />
-                <FaqItem 
-                  question="What information do you need to start a project?"
-                  answer="To get started, we typically need your project goals, target audience information, design preferences, content, and any existing brand guidelines. Don't worry if you don't have everything ready—we can guide you through the process."
-                />
+              {/* Contact Options */}
+              <div className="space-y-8">
+                <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-6">
+                  <h2 className="text-2xl font-bold mb-6">Need Immediate Assistance?</h2>
+                  <p className="text-gray-600 mb-6">
+                    Our consultants are available to chat with you directly about your business needs.
+                  </p>
+                  
+                  <a 
+                    href="https://wa.me/15551234567" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full bg-green-500 text-white font-medium px-6 py-3 rounded-md hover:bg-green-600 transition-default"
+                  >
+                    <MessageCircle size={20} />
+                    Chat on WhatsApp
+                  </a>
+                </div>
+                
+                <div className="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100">
+                  <h2 className="text-2xl font-bold mb-6">Common Questions</h2>
+                  
+                  <div className="space-y-6">
+                    <FAQItem 
+                      question="What happens in the free consultation?"
+                      answer="During our 30-minute free consultation, we'll discuss your business challenges, goals, and how our strategic consulting services might help. There's no obligation to proceed further."
+                    />
+                    <FAQItem 
+                      question="How long does a typical consulting project take?"
+                      answer="Project timelines vary depending on scope and complexity. A strategic assessment might take 2-4 weeks, while implementation support could span several months. We'll provide a detailed timeline during our consultation."
+                    />
+                    <FAQItem 
+                      question="Do you work with businesses in all industries?"
+                      answer="Yes, we specialize in helping MSMEs across various industries. Our methodologies are adaptable to different sectors while leveraging our consultants' industry-specific expertise."
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -281,15 +274,15 @@ const ContactInfoCard: React.FC<ContactInfoCardProps> = ({ icon, title, details 
   );
 };
 
-interface FaqItemProps {
+interface FAQItemProps {
   question: string;
   answer: string;
 }
 
-const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
+const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-      <h3 className="text-lg font-semibold mb-3">{question}</h3>
+    <div>
+      <h3 className="text-lg font-semibold mb-2">{question}</h3>
       <p className="text-gray-600">{answer}</p>
     </div>
   );

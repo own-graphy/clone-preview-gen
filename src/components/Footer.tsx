@@ -1,117 +1,101 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { logo } from '../assets';
-import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
-const Footer: React.FC = () => {
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src={logo} alt="Graphix" className="h-8 w-auto brightness-0 invert" />
-              <span className="font-semibold text-xl">Graphix</span>
+    <footer className="bg-gray-900 text-gray-300">
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <Link to="/" className="flex items-center mb-4">
+              <img src={logo} alt="Advizo Consulting" className="h-8 w-auto mr-2" />
+              <span className="font-semibold text-xl text-white">Advizo Consulting</span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              We're a creative design agency focused on delivering exceptional digital experiences.
+            <p className="mb-6">
+              Strategic consulting services for MSMEs, helping businesses transform challenges into growth opportunities.
             </p>
             <div className="flex space-x-4">
-              <SocialIcon icon={<Facebook size={18} />} />
-              <SocialIcon icon={<Twitter size={18} />} />
-              <SocialIcon icon={<Instagram size={18} />} />
-              <SocialIcon icon={<Linkedin size={18} />} />
+              <a href="#" className="bg-gray-800 hover:bg-primary text-white p-2 rounded-full transition-colors">
+                <Facebook size={18} />
+              </a>
+              <a href="#" className="bg-gray-800 hover:bg-primary text-white p-2 rounded-full transition-colors">
+                <Twitter size={18} />
+              </a>
+              <a href="#" className="bg-gray-800 hover:bg-primary text-white p-2 rounded-full transition-colors">
+                <Linkedin size={18} />
+              </a>
+              <a href="#" className="bg-gray-800 hover:bg-primary text-white p-2 rounded-full transition-colors">
+                <Instagram size={18} />
+              </a>
             </div>
           </div>
           
-          {/* Services */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Services</h3>
-            <ul className="space-y-2">
-              <FooterLink to="/services" label="Web Design" />
-              <FooterLink to="/services" label="Logo Design" />
-              <FooterLink to="/services" label="Branding" />
-              <FooterLink to="/services" label="UI/UX Design" />
-              <FooterLink to="/services" label="Print Design" />
-            </ul>
-          </div>
-          
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Quick Links</h3>
-            <ul className="space-y-2">
-              <FooterLink to="/" label="Home" />
-              <FooterLink to="/about" label="About Us" />
-              <FooterLink to="/portfolio" label="Portfolio" />
-              <FooterLink to="/contact" label="Contact" />
-              <FooterLink to="#" label="Privacy Policy" />
-            </ul>
-          </div>
-          
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Contact Us</h3>
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-4">Our Services</h3>
             <ul className="space-y-3">
-              <li className="flex items-start space-x-3">
-                <MapPin size={18} className="flex-shrink-0 mt-1 text-gray-400" />
-                <span className="text-gray-400 text-sm">
-                  123 Design Street, Creative City, 10001
-                </span>
+              <li><Link to="/services" className="hover:text-primary transition-colors">Operational Excellence</Link></li>
+              <li><Link to="/services" className="hover:text-primary transition-colors">Revenue Growth</Link></li>
+              <li><Link to="/services" className="hover:text-primary transition-colors">Market Expansion</Link></li>
+              <li><Link to="/services" className="hover:text-primary transition-colors">Innovation & Technology</Link></li>
+              <li><Link to="/services" className="hover:text-primary transition-colors">Business Transformation</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-3">
+              <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link to="/case-studies" className="hover:text-primary transition-colors">Case Studies</Link></li>
+              <li><Link to="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-4">Contact Us</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <MapPin className="flex-shrink-0 h-5 w-5 mr-2 mt-0.5" />
+                <span>123 Business Avenue, Corporate District, 10001</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Phone size={18} className="flex-shrink-0 text-gray-400" />
-                <span className="text-gray-400 text-sm">+1 (555) 123-4567</span>
+              <li className="flex items-center">
+                <Phone className="h-5 w-5 mr-2" />
+                <span>+1 (555) 123-4567</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Mail size={18} className="flex-shrink-0 text-gray-400" />
-                <span className="text-gray-400 text-sm">hello@graphix.com</span>
+              <li className="flex items-center">
+                <Mail className="h-5 w-5 mr-2" />
+                <span>contact@advizoconsulting.com</span>
               </li>
             </ul>
+            <div className="mt-6">
+              <Link to="/contact" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
+                Free Consultation
+              </Link>
+            </div>
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Graphix. All rights reserved.
-          </p>
-          <p className="text-gray-500 text-xs mt-2 md:mt-0">
-            Designed & Developed with ❤️ by Graphix Team
-          </p>
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p>© {currentYear} Advizo Consulting. All rights reserved.</p>
+            <div className="mt-4 md:mt-0">
+              <ul className="flex space-x-6">
+                <li><a href="#" className="hover:text-primary transition-colors">Terms</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Cookies</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
   );
 };
-
-interface FooterLinkProps {
-  to: string;
-  label: string;
-}
-
-const FooterLink: React.FC<FooterLinkProps> = ({ to, label }) => (
-  <li>
-    <Link 
-      to={to}
-      className="text-gray-400 text-sm hover:text-white transition duration-300"
-    >
-      {label}
-    </Link>
-  </li>
-);
-
-interface SocialIconProps {
-  icon: React.ReactNode;
-}
-
-const SocialIcon: React.FC<SocialIconProps> = ({ icon }) => (
-  <a 
-    href="#" 
-    className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition duration-300"
-  >
-    {icon}
-  </a>
-);
 
 export default Footer;
