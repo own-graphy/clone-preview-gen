@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
           {/* Search Icon */}
           <button 
             onClick={toggleSearch} 
-            className="text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20"
+            className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20 ${isSearchOpen ? 'hidden' : 'block'}`}
             aria-label="Search"
           >
             <Search size={22} />
@@ -87,17 +87,17 @@ const Navbar: React.FC = () => {
       </div>
       
       {/* Search Bar - Animation based on screen size */}
-      <div className={`absolute top-0 right-0 h-full transition-all duration-300 ease-in-out overflow-hidden bg-darkGray/95 backdrop-blur-lg z-10 flex items-center ${
+      <div className={`absolute top-0 right-0 h-full transition-all duration-300 ease-in-out overflow-hidden bg-darkGray/95 backdrop-blur-lg z-10 flex items-center rounded-md ${
         isSearchOpen 
           ? 'w-full md:w-2/3 opacity-100' 
           : 'w-0 opacity-0'
       }`}>
-        <div className="w-full flex items-center px-4 py-4">
+        <div className="w-full flex items-center px-3 py-3">
           <input
             ref={searchInputRef}
             type="text"
             placeholder="Search..."
-            className="w-full bg-transparent border-b-2 border-gray-600 focus:border-primary py-2 px-4 text-white placeholder-gray-400 outline-none"
+            className="w-full bg-transparent border-b-2 border-gray-600 focus:border-primary py-2 px-3 text-white placeholder-gray-400 outline-none rounded-md"
           />
           <button 
             onClick={toggleSearch}
@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
       
       {/* Hamburger Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
           isMenuOpen ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none -z-10'
         }`}
         onClick={toggleMenu}
@@ -118,12 +118,15 @@ const Navbar: React.FC = () => {
       
       {/* Hamburger Menu Content */}
       <div 
-        className={`fixed top-0 left-0 h-screen max-h-screen overflow-y-auto bg-darkGray shadow-xl transition-all duration-300 ease-in-out z-20 ${
+        className={`fixed top-0 left-0 h-auto max-h-screen overflow-y-auto bg-darkGray shadow-xl transition-all duration-300 ease-in-out z-20 ${
           isMenuOpen ? 'w-80 opacity-100' : 'w-0 opacity-0'
         }`}
-        style={{ borderBottomRightRadius: '20px', padding: '20px' }}
+        style={{ 
+          borderBottomRightRadius: '20px',
+          padding: '20px'
+        }}
       >
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col">
           <div className="flex items-center justify-between mb-8 pt-2">
             <Link to="/" className="flex items-center space-x-2" onClick={toggleMenu}>
               <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
@@ -137,7 +140,7 @@ const Navbar: React.FC = () => {
             </button>
           </div>
           
-          <nav className="flex flex-col space-y-1 flex-grow">
+          <nav className="flex flex-col space-y-1">
             <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
             <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
             <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
@@ -146,7 +149,7 @@ const Navbar: React.FC = () => {
             <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
           </nav>
           
-          <div className="mt-auto pt-8 border-t border-gray-800">
+          <div className="mt-8 pt-8 border-t border-gray-800">
             <p className="text-gray-400 text-sm">© 2023 Advizo Consulting</p>
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-gray-400 hover:text-white">
