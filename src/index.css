@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 225 20% 10%;
+    --background: 225 20% 12%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;
@@ -38,7 +38,7 @@
 
   @media (prefers-color-scheme: light) {
     :root {
-      --background: 225 20% 10%;
+      --background: 225 20% 12%;
       --foreground: 210 40% 98%;
     }
   }
@@ -57,36 +57,11 @@
   html {
     @apply scroll-smooth antialiased;
   }
-
-  /* Ensure readable text on white backgrounds */
-  .bg-white *, .bg-gray-50 *, .bg-gray-100 * {
-    @apply text-black;
-  }
-  
-  /* Form fields in white containers */
-  .bg-white select, .bg-white input, .bg-white textarea,
-  .bg-gray-50 select, .bg-gray-50 input, .bg-gray-50 textarea,
-  .bg-gray-100 select, .bg-gray-100 input, .bg-gray-100 textarea {
-    @apply text-black;
-  }
-  
-  /* Form elements in dark containers should have white text */
-  .bg-darkGray select, .bg-darkGray input, .bg-darkGray textarea,
-  .bg-darkCharcoal select, .bg-darkCharcoal input, .bg-darkCharcoal textarea,
-  .bg-black select, .bg-black input, .bg-black textarea {
-    @apply text-white;
-  }
-  
-  /* For elements with light backgrounds, ensure text is dark */
-  [class*="bg-white"], [class*="bg-gray-50"], [class*="bg-gray-100"], 
-  [class*="bg-gray-200"], [class*="bg-gray-300"] {
-    @apply text-black;
-  }
 }
 
 @layer utilities {
   .glass {
-    @apply backdrop-blur-lg bg-white/5 dark:bg-black/20 border border-white/5 dark:border-gray-800/30;
+    @apply backdrop-blur-lg bg-white/5 dark:bg-black/20 border border-white/10 dark:border-gray-800/30;
   }
   
   .glass-subtle {
@@ -107,20 +82,6 @@
   
   .transition-default {
     @apply transition-all duration-300 ease-apple;
-  }
-
-  /* Reduced shadow spread */
-  .shadow-sm {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  .shadow-md {
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Image shadow with reduced spread */
-  .img-shadow {
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -160,9 +121,9 @@ html {
 .img-loading {
   background: linear-gradient(
     90deg,
-    rgba(20, 20, 30, 0.1) 0%,
-    rgba(30, 30, 40, 0.2) 50%,
-    rgba(20, 20, 30, 0.1) 100%
+    rgba(30, 30, 40, 0.1) 0%,
+    rgba(40, 40, 50, 0.2) 50%,
+    rgba(30, 30, 40, 0.1) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -175,17 +136,4 @@ html {
   100% {
     background-position: -200% 0;
   }
-}
-
-/* Case study hover effects */
-.case-study-hover {
-  @apply transition-all duration-300 ease-apple;
-}
-
-.case-study-hover:hover .case-study-content {
-  @apply opacity-100 visible;
-}
-
-.case-study-content {
-  @apply absolute inset-0 bg-black/75 opacity-0 invisible transition-all duration-300 flex flex-col justify-center items-center p-6 text-white;
 }
