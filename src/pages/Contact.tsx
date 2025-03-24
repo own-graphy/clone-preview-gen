@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -80,9 +79,8 @@ const Contact: React.FC = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              {/* Contact Form */}
               <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-bold mb-6">Schedule a Free Consultation</h2>
+                <h2 className="text-2xl font-bold text-black mb-6">Schedule a Free Consultation</h2>
                 
                 {isSubmitted ? (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
@@ -120,7 +118,7 @@ const Contact: React.FC = () => {
                           name="industryType"
                           value={formState.industryType}
                           onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-black"
                           required
                         >
                           <option value="">Select your industry</option>
@@ -205,7 +203,6 @@ const Contact: React.FC = () => {
                 )}
               </div>
               
-              {/* Contact Options */}
               <div className="space-y-8">
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-6">
                   <h2 className="text-2xl font-bold mb-6">Need Immediate Assistance?</h2>

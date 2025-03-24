@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -12,20 +11,13 @@ const CaseStudies: React.FC = () => {
       <main className="flex-grow pt-20">
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Case Studies</h1>
-              <p className="text-lg text-gray-600">
-                Real results from businesses we've helped transform with our strategic consulting.
-              </p>
-            </div>
-            
             {/* Filters */}
             <div className="flex flex-wrap gap-4 mb-12 justify-center">
               <button className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium">All Industries</button>
-              <button className="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Manufacturing</button>
-              <button className="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Retail</button>
-              <button className="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Technology</button>
-              <button className="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Healthcare</button>
+              <button className="bg-white text-black border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Manufacturing</button>
+              <button className="bg-white text-black border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Retail</button>
+              <button className="bg-white text-black border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Technology</button>
+              <button className="bg-white text-black border border-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50">Healthcare</button>
             </div>
             
             {/* Featured Case Study */}
@@ -149,13 +141,13 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ image, title, category, m
       </div>
       <div className="p-6">
         <div className="text-sm font-medium text-primary mb-2">{category}</div>
-        <h3 className="text-xl font-semibold mb-3">{title}</h3>
+        <h3 className="text-xl font-semibold text-black mb-3">{title}</h3>
         <div className="flex gap-4 mb-3">
           {metrics.map((metric, index) => (
-            <div key={index} className="text-sm bg-gray-100 px-3 py-1 rounded-full">{metric}</div>
+            <div key={index} className="text-sm text-black bg-gray-100 px-3 py-1 rounded-full">{metric}</div>
           ))}
         </div>
-        <p className="text-gray-600 mb-4">{description}</p>
+        <p className="text-gray-700 mb-4">{description}</p>
         <button className="text-primary font-medium inline-flex items-center">
           Read Case Study <ArrowRight size={16} className="ml-1" />
         </button>
