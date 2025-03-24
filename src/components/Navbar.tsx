@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
@@ -82,6 +83,43 @@ const Navbar: React.FC = () => {
           >
             <Search size={22} />
           </button>
+
+          {/* Mobile Menu - full screen overlay */}
+          {isMenuOpen && (
+            <div className="fixed inset-0 z-10 bg-darkGray/95 backdrop-blur-md">
+              <div className="container mx-auto px-4 py-20">
+                <div className="flex flex-col space-y-2 p-5">
+                  <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
+                  <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
+                  <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
+                  <MenuLink to="/about" label="About Advizo" currentPath={location.pathname} onClick={toggleMenu} />
+                  <MenuLink to="/contact" label="Contact Us" currentPath={location.pathname} onClick={toggleMenu} />
+                  <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Search Bar Overlay */}
+          {isSearchOpen && (
+            <div className="absolute inset-0 bg-darkGray/95 flex items-center px-4 z-10">
+              <div className="w-full max-w-2xl mx-auto relative">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className="w-full bg-gray-800/50 text-white py-3 px-4 pr-10 rounded-md border border-gray-700 focus:border-primary focus:outline-none"
+                  placeholder="Search..."
+                  autoFocus
+                />
+                <button 
+                  onClick={toggleSearch}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>

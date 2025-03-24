@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -58,7 +59,14 @@
   }
 
   /* Ensure readable text on white backgrounds */
-  .bg-white * {
+  .bg-white *, .bg-gray-50 *, .bg-gray-100 * {
+    @apply text-black;
+  }
+  
+  /* Form fields in white containers */
+  .bg-white select, .bg-white input, .bg-white textarea,
+  .bg-gray-50 select, .bg-gray-50 input, .bg-gray-50 textarea,
+  .bg-gray-100 select, .bg-gray-100 input, .bg-gray-100 textarea {
     @apply text-black;
   }
 }
@@ -94,7 +102,7 @@
   }
   
   .shadow-md {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -149,4 +157,17 @@ html {
   100% {
     background-position: -200% 0;
   }
+}
+
+/* Case study hover effects */
+.case-study-hover {
+  @apply transition-all duration-300 ease-apple;
+}
+
+.case-study-hover:hover .case-study-content {
+  @apply opacity-100 visible;
+}
+
+.case-study-content {
+  @apply absolute inset-0 bg-black/75 opacity-0 invisible transition-all duration-300 flex flex-col justify-center items-center p-6 text-white;
 }
