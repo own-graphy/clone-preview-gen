@@ -80,22 +80,21 @@ const Contact: React.FC = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              {/* Contact Form */}
               <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-bold mb-6">Schedule a Free Consultation</h2>
+                <h2 className="text-2xl font-bold text-black mb-6">Schedule a Free Consultation</h2>
                 
                 {isSubmitted ? (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
                     <div className="bg-green-100 rounded-full p-3 mb-4">
                       <Check className="h-8 w-8 text-green-600" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Request Submitted!</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-black">Request Submitted!</h3>
                     <p className="text-gray-600">
                       Thanks for reaching out. One of our strategy consultants will contact you within 24 hours to schedule your free consultation.
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit} className="text-black">
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                       <div>
                         <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -107,7 +106,7 @@ const Contact: React.FC = () => {
                           name="companyName"
                           value={formState.companyName}
                           onChange={handleChange}
-                          className="w-full"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -120,7 +119,7 @@ const Contact: React.FC = () => {
                           name="industryType"
                           value={formState.industryType}
                           onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                          className="w-full px-4 py-2 bg-black text-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                           required
                         >
                           <option value="">Select your industry</option>
@@ -147,7 +146,7 @@ const Contact: React.FC = () => {
                           name="email"
                           value={formState.email}
                           onChange={handleChange}
-                          className="w-full"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -161,7 +160,7 @@ const Contact: React.FC = () => {
                           name="phone"
                           value={formState.phone}
                           onChange={handleChange}
-                          className="w-full"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -177,7 +176,7 @@ const Contact: React.FC = () => {
                         rows={5}
                         value={formState.message}
                         onChange={handleChange}
-                        className="w-full"
+                        className="w-full bg-black text-white"
                       />
                     </div>
                     
@@ -205,10 +204,9 @@ const Contact: React.FC = () => {
                 )}
               </div>
               
-              {/* Contact Options */}
               <div className="space-y-8">
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-6">
-                  <h2 className="text-2xl font-bold mb-6">Need Immediate Assistance?</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-black">Need Immediate Assistance?</h2>
                   <p className="text-gray-600 mb-6">
                     Our consultants are available to chat with you directly about your business needs.
                   </p>
@@ -225,7 +223,7 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div className="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-bold mb-6">Common Questions</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-black">Common Questions</h2>
                   
                   <div className="space-y-6">
                     <FAQItem 
@@ -264,7 +262,7 @@ const ContactInfoCard: React.FC<ContactInfoCardProps> = ({ icon, title, details 
       <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full text-primary mb-4">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <h3 className="text-xl font-semibold mb-3 text-black">{title}</h3>
       <div className="space-y-1">
         {details.map((detail, index) => (
           <p key={index} className="text-gray-600">{detail}</p>
@@ -282,7 +280,7 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-2">{question}</h3>
+      <h3 className="text-lg font-semibold mb-2 text-black">{question}</h3>
       <p className="text-gray-600">{answer}</p>
     </div>
   );

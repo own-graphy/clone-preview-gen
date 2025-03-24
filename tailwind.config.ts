@@ -30,9 +30,9 @@ export default {
         ],
       },
       colors: {
-        darkGray: "#1A1F2C",
-        charcoal: "#403E43",
-        darkCharcoal: "#221F26",
+        darkGray: "#131620", // Darkened for more premium look
+        charcoal: "#333842",
+        darkCharcoal: "#1C1C24",
         darkBlack: "#0A0A0A",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -107,8 +107,8 @@ export default {
           "50%": { transform: "translateY(-10px)" },
         },
         "pulse-subtle": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
+          "0%, 100%": { opacity: "0.8" },
+          "50%": { opacity: "0.5" },
         },
       },
       animation: {
@@ -123,8 +123,9 @@ export default {
         "pulse-subtle": "pulse-subtle 2s ease-in-out infinite",
       },
       boxShadow: {
-        'soft': '0 10px 50px -12px rgba(0, 0, 0, 0.12)',
-        'glow': '0 0 15px 2px rgba(255, 255, 255, 0.5)',
+        'soft': '0 10px 30px -12px rgba(0, 0, 0, 0.2)',
+        'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       },
       transitionTimingFunction: {
         'apple': 'cubic-bezier(0.4, 0.0, 0.2, 1)',
