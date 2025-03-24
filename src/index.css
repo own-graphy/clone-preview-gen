@@ -69,6 +69,19 @@
   .bg-gray-100 select, .bg-gray-100 input, .bg-gray-100 textarea {
     @apply text-black;
   }
+  
+  /* Form elements in dark containers should have white text */
+  .bg-darkGray select, .bg-darkGray input, .bg-darkGray textarea,
+  .bg-darkCharcoal select, .bg-darkCharcoal input, .bg-darkCharcoal textarea,
+  .bg-black select, .bg-black input, .bg-black textarea {
+    @apply text-white;
+  }
+  
+  /* For elements with light backgrounds, ensure text is dark */
+  [class*="bg-white"], [class*="bg-gray-50"], [class*="bg-gray-100"], 
+  [class*="bg-gray-200"], [class*="bg-gray-300"] {
+    @apply text-black;
+  }
 }
 
 @layer utilities {
@@ -103,6 +116,11 @@
   
   .shadow-md {
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Image shadow with reduced spread */
+  .img-shadow {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   }
 }
 

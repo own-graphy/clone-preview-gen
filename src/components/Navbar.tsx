@@ -84,11 +84,18 @@ const Navbar: React.FC = () => {
             <Search size={22} />
           </button>
 
-          {/* Mobile Menu - full screen overlay */}
+          {/* Hamburger Menu - full screen overlay with blur effect on remaining content */}
           {isMenuOpen && (
-            <div className="fixed inset-0 z-10 bg-darkGray/95 backdrop-blur-md">
-              <div className="container mx-auto px-4 py-20">
-                <div className="flex flex-col space-y-2 p-5">
+            <>
+              {/* Background overlay with blur */}
+              <div 
+                className="fixed inset-0 bg-darkGray/70 backdrop-blur-md z-10"
+                onClick={toggleMenu}
+              />
+              
+              {/* Menu container */}
+              <div className="fixed top-0 left-0 w-[80%] max-w-md h-auto z-20 bg-darkCharcoal/70 backdrop-blur-sm p-5 rounded-br-[20px] shadow-lg">
+                <div className="flex flex-col space-y-4 p-3 mt-14">
                   <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
                   <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
                   <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
@@ -97,7 +104,7 @@ const Navbar: React.FC = () => {
                   <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
                 </div>
               </div>
-            </div>
+            </>
           )}
 
           {/* Search Bar Overlay */}
@@ -107,7 +114,7 @@ const Navbar: React.FC = () => {
                 <input
                   ref={searchInputRef}
                   type="text"
-                  className="w-full bg-gray-800/50 text-white py-3 px-4 pr-10 rounded-md border border-gray-700 focus:border-primary focus:outline-none"
+                  className="w-full bg-gray-800/50 text-white py-3 px-4 pr-10 rounded-[3px] border border-gray-700 focus:border-primary focus:outline-none"
                   placeholder="Search..."
                   autoFocus
                 />
