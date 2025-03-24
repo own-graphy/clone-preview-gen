@@ -62,17 +62,17 @@ const Navbar: React.FC = () => {
           {/* Logo - Centered on mobile, left on desktop (after hamburger) */}
           <Link to="/" className="flex items-center space-x-2 ml-4 z-10">
             <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
-            <span className="font-semibold text-xl text-gray-100">Advizo Consulting</span>
+            <span className="font-semibold text-xl text-gray-100">Advizo Transforming MSMEs</span>
           </Link>
           
           {/* Desktop Menu - hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8 flex-grow justify-center ml-8">
             <NavLink to="/" label="Home" currentPath={location.pathname} />
-            <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
             <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
-            <NavLink to="/about" label="About" currentPath={location.pathname} />
+            <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
+            <NavLink to="/about" label="About Advizo" currentPath={location.pathname} />
+            <NavLink to="/contact" label="Contact Us" currentPath={location.pathname} />
             <NavLink to="/careers" label="Careers" currentPath={location.pathname} />
-            <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </nav>
           
           {/* Search Icon */}
@@ -121,9 +121,9 @@ const Navbar: React.FC = () => {
         className={`fixed top-0 left-0 h-screen max-h-screen overflow-y-auto bg-darkGray shadow-xl transition-all duration-300 ease-in-out z-20 ${
           isMenuOpen ? 'w-80 opacity-100' : 'w-0 opacity-0'
         }`}
-        style={{ borderBottomRightRadius: '20px' }}
+        style={{ borderBottomRightRadius: '20px', padding: '20px' }}
       >
-        <div className="p-5 flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen">
           <div className="flex items-center justify-between mb-8 pt-2">
             <Link to="/" className="flex items-center space-x-2" onClick={toggleMenu}>
               <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
@@ -139,11 +139,11 @@ const Navbar: React.FC = () => {
           
           <nav className="flex flex-col space-y-1 flex-grow">
             <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
-            <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
             <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
-            <MenuLink to="/about" label="About" currentPath={location.pathname} onClick={toggleMenu} />
+            <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
+            <MenuLink to="/about" label="About Advizo" currentPath={location.pathname} onClick={toggleMenu} />
+            <MenuLink to="/contact" label="Contact Us" currentPath={location.pathname} onClick={toggleMenu} />
             <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
-            <MenuLink to="/contact" label="Contact" currentPath={location.pathname} onClick={toggleMenu} />
           </nav>
           
           <div className="mt-auto pt-8 border-t border-gray-800">
