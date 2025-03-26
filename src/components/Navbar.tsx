@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
 import { Menu, X, Search, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -85,52 +86,58 @@ const Navbar: React.FC = () => {
             <Search size={22} />
           </button>
 
-          {/* Hamburger Menu - full screen overlay */}
+          {/* Hamburger Menu - responsive width overlay */}
           {isMenuOpen && (
-            <div className="fixed inset-0 bg-[#131620] z-50">
-              <div className="flex flex-col h-full">
-                {/* Header with Logo and Close Button - 80px padding */}
-                <div className="flex items-center justify-between px-20 pt-20 pb-10">
-                  <div className="flex items-center space-x-2">
-                    <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
-                    <span className="font-semibold text-xl text-white">Advizo</span>
+            <div className="fixed inset-0 z-50">
+              <div className="flex h-full">
+                {/* Dark blue menu panel with responsive width */}
+                <div className="w-3/4 sm:w-[30%] lg:w-[20%] h-full bg-[#0F1218] overflow-hidden">
+                  {/* Header with Logo and Close Button */}
+                  <div className="flex items-center justify-between px-20 pt-20 pb-10">
+                    <div className="flex items-center space-x-2">
+                      <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
+                      <span className="font-semibold text-xl text-white">Advizo</span>
+                    </div>
+                    <button 
+                      onClick={toggleMenu}
+                      className="text-gray-300 hover:text-white"
+                      aria-label="Close Menu"
+                    >
+                      <X size={24} />
+                    </button>
                   </div>
-                  <button 
-                    onClick={toggleMenu}
-                    className="text-gray-300 hover:text-white"
-                    aria-label="Close Menu"
-                  >
-                    <X size={24} />
-                  </button>
+                  
+                  {/* Menu links */}
+                  <div className="px-20">
+                    <nav className="flex flex-col space-y-6">
+                      <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/about" label="About" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/contact" label="Contact" currentPath={location.pathname} onClick={toggleMenu} />
+                    </nav>
+                  </div>
+                  
+                  {/* Footer with divider and social links */}
+                  <div className="px-20 pb-20 pt-10">
+                    <Separator className="mb-10 opacity-20" />
+                    <div className="flex space-x-6">
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Facebook size={22} />
+                      </a>
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Linkedin size={22} />
+                      </a>
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Instagram size={22} />
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 
-                {/* Menu links - 80px padding */}
-                <div className="flex-1 px-20">
-                  <nav className="flex flex-col space-y-6">
-                    <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
-                    <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
-                    <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
-                    <MenuLink to="/about" label="About" currentPath={location.pathname} onClick={toggleMenu} />
-                    <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
-                    <MenuLink to="/contact" label="Contact" currentPath={location.pathname} onClick={toggleMenu} />
-                  </nav>
-                </div>
-                
-                {/* Footer with divider and social links - 80px padding */}
-                <div className="px-20 pb-20 pt-10">
-                  <Separator className="mb-10 opacity-20" />
-                  <div className="flex space-x-6">
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      <Facebook size={22} />
-                    </a>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      <Linkedin size={22} />
-                    </a>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      <Instagram size={22} />
-                    </a>
-                  </div>
-                </div>
+                {/* Semi-transparent overlay for the rest of the screen */}
+                <div className="flex-1 bg-black/60" onClick={toggleMenu}></div>
               </div>
             </div>
           )}
