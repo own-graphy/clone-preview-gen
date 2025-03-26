@@ -73,7 +73,8 @@
   /* Form elements in dark containers should have white text */
   .bg-darkGray select, .bg-darkGray input, .bg-darkGray textarea,
   .bg-darkCharcoal select, .bg-darkCharcoal input, .bg-darkCharcoal textarea,
-  .bg-black select, .bg-black input, .bg-black textarea {
+  .bg-black select, .bg-black input, .bg-black textarea,
+  .bg-[#1A1F2C] select, .bg-[#1A1F2C] input, .bg-[#1A1F2C] textarea {
     @apply text-white;
   }
   

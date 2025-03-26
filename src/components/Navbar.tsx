@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
-import { Menu, X, Search } from 'lucide-react';
+import { Menu, X, Search, Facebook, Linkedin, Instagram } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,17 +62,17 @@ const Navbar: React.FC = () => {
           {/* Logo - Centered on mobile, left on desktop (after hamburger) */}
           <Link to="/" className="flex items-center space-x-2 ml-4 z-10">
             <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
-            <span className="font-semibold text-xl text-gray-100">Advizo Transforming MSMEs</span>
+            <span className="font-semibold text-xl text-gray-100">Advizo</span>
           </Link>
           
           {/* Desktop Menu - hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8 flex-grow justify-center ml-8">
             <NavLink to="/" label="Home" currentPath={location.pathname} />
-            <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
             <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
-            <NavLink to="/about" label="About Advizo" currentPath={location.pathname} />
-            <NavLink to="/contact" label="Contact Us" currentPath={location.pathname} />
+            <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
+            <NavLink to="/about" label="About" currentPath={location.pathname} />
             <NavLink to="/careers" label="Careers" currentPath={location.pathname} />
+            <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </nav>
           
           {/* Search Icon */}
@@ -93,15 +93,53 @@ const Navbar: React.FC = () => {
                 onClick={toggleMenu}
               />
               
-              {/* Menu container */}
-              <div className="fixed top-0 left-0 w-[80%] max-w-md h-auto z-20 bg-darkCharcoal/70 backdrop-blur-sm p-5 rounded-br-[20px] shadow-lg">
-                <div className="flex flex-col space-y-4 p-3 mt-14">
-                  <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
-                  <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
-                  <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
-                  <MenuLink to="/about" label="About Advizo" currentPath={location.pathname} onClick={toggleMenu} />
-                  <MenuLink to="/contact" label="Contact Us" currentPath={location.pathname} onClick={toggleMenu} />
-                  <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
+              {/* Menu container - styled to match the image */}
+              <div className="fixed top-0 left-0 w-full md:w-[420px] h-full z-20 bg-[#1A1F2C]/90 backdrop-blur-sm rounded-br-[20px]">
+                <div className="flex flex-col h-full">
+                  {/* Logo and close button at the top */}
+                  <div className="flex items-center justify-between p-4 border-b border-gray-700/30">
+                    <div className="flex items-center space-x-2">
+                      <img src={logo} alt="Advizo Consulting" className="h-10 w-auto" />
+                      <span className="font-semibold text-xl text-white">Advizo</span>
+                    </div>
+                    <button 
+                      onClick={toggleMenu}
+                      className="text-gray-300 hover:text-white"
+                      aria-label="Close Menu"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
+                  
+                  {/* Menu links */}
+                  <div className="flex-1 overflow-auto py-8 px-6">
+                    <nav className="flex flex-col space-y-6">
+                      <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/case-studies" label="Case Studies" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/about" label="About" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/careers" label="Careers" currentPath={location.pathname} onClick={toggleMenu} />
+                      <MenuLink to="/contact" label="Contact" currentPath={location.pathname} onClick={toggleMenu} />
+                    </nav>
+                  </div>
+                  
+                  {/* Footer with copyright and social links */}
+                  <div className="p-6 border-t border-gray-700/30">
+                    <div className="text-gray-400 text-sm mb-4">
+                      © 2023 Advizo Consulting
+                    </div>
+                    <div className="flex space-x-4">
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Facebook size={20} />
+                      </a>
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Linkedin size={20} />
+                      </a>
+                      <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                        <Instagram size={20} />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </>
@@ -167,10 +205,10 @@ const MenuLink: React.FC<MenuLinkProps> = ({ to, label, currentPath, onClick }) 
     <Link
       to={to}
       onClick={onClick}
-      className={`block py-3 px-4 transition duration-300 text-lg font-medium rounded hover:bg-gray-800/50 ${
+      className={`block text-2xl font-medium transition duration-300 ${
         isActive 
-          ? 'text-primary bg-gray-800/30' 
-          : 'text-gray-200'
+          ? 'text-primary' 
+          : 'text-white hover:text-primary'
       }`}
     >
       {label}
