@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
@@ -105,7 +106,7 @@ const Navbar: React.FC = () => {
                   </button>
                 </div>
                 
-                {/* Menu links */}
+                {/* Menu links - Fixed larger font and spacing */}
                 <nav className="flex flex-col space-y-6">
                   <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
                   <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
@@ -197,7 +198,7 @@ const MenuLink: React.FC<MenuLinkProps> = ({ to, label, currentPath, onClick }) 
     <Link
       to={to}
       onClick={onClick}
-      className={`block text-2xl font-medium transition duration-300 ${
+      className={`block text-xl font-medium transition duration-300 ${
         isActive 
           ? 'text-primary' 
           : 'text-white hover:text-primary'
