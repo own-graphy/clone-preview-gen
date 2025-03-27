@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
@@ -42,7 +41,6 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
@@ -52,7 +50,6 @@ const Navbar: React.FC = () => {
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-darkGray/90 backdrop-blur-md shadow-md' : 'bg-darkGray/70 backdrop-blur-sm'}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
-          {/* Hamburger Menu Button */}
           <button 
             onClick={toggleMenu} 
             className="text-gray-200 hover:text-white transition-colors focus:outline-none z-20"
@@ -61,13 +58,11 @@ const Navbar: React.FC = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Logo - Centered on mobile, left on desktop (after hamburger) */}
           <Link to="/" className="flex items-center space-x-2 ml-4 z-10">
             <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
             <span className="font-semibold text-xl text-gray-100">Advizo</span>
           </Link>
           
-          {/* Desktop Menu - hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8 flex-grow justify-center ml-8">
             <NavLink to="/" label="Home" currentPath={location.pathname} />
             <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
@@ -77,7 +72,6 @@ const Navbar: React.FC = () => {
             <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </nav>
           
-          {/* Search Icon */}
           <button 
             onClick={toggleSearch} 
             className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20 ${isSearchOpen ? 'hidden' : 'block'}`}
@@ -86,12 +80,9 @@ const Navbar: React.FC = () => {
             <Search size={22} />
           </button>
 
-          {/* Mobile Menu Overlay */}
           {isMenuOpen && (
             <div className="fixed inset-0 z-50 flex">
-              {/* Dark blue sidebar - responsive width */}
-              <div className="w-3/4 sm:w-[30%] lg:w-[20%] h-full bg-[#0F1218] p-8">
-                {/* Header with Logo and Close Button */}
+              <div className="w-3/4 sm:w-[30%] lg:w-[20%] h-full bg-[#0A0E17] p-8">
                 <div className="flex items-center justify-between mb-10">
                   <div className="flex items-center space-x-2">
                     <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
@@ -106,7 +97,6 @@ const Navbar: React.FC = () => {
                   </button>
                 </div>
                 
-                {/* Menu links - Fixed larger font and spacing */}
                 <nav className="flex flex-col space-y-6">
                   <MenuLink to="/" label="Home" currentPath={location.pathname} onClick={toggleMenu} />
                   <MenuLink to="/services" label="Offerings" currentPath={location.pathname} onClick={toggleMenu} />
@@ -116,7 +106,6 @@ const Navbar: React.FC = () => {
                   <MenuLink to="/contact" label="Contact" currentPath={location.pathname} onClick={toggleMenu} />
                 </nav>
                 
-                {/* Footer with divider and social links */}
                 <div className="mt-10">
                   <Separator className="mb-10 opacity-20" />
                   <div className="flex space-x-6">
@@ -133,12 +122,10 @@ const Navbar: React.FC = () => {
                 </div>
               </div>
               
-              {/* Semi-transparent overlay for the rest of the screen */}
               <div className="flex-1 bg-black/60" onClick={toggleMenu}></div>
             </div>
           )}
 
-          {/* Search Bar Overlay */}
           {isSearchOpen && (
             <div className="absolute inset-0 bg-darkGray/95 flex items-center px-4 z-10">
               <div className="w-full max-w-2xl mx-auto relative">
