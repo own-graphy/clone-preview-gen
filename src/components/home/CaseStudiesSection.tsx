@@ -2,7 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import CaseStudyCard from './CaseStudyCard';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { caseStudiesData } from '@/data/caseStudies';
 
 const CaseStudiesSection: React.FC = () => {
   return (
@@ -16,24 +17,53 @@ const CaseStudiesSection: React.FC = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <CaseStudyCard 
-            image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
-            title="Manufacturing Company Triples Output"
-            category="Operational Excellence"
-            description="How we helped a manufacturing firm optimize their production processes and triple their output within 6 months."
-          />
-          <CaseStudyCard 
-            image="https://images.unsplash.com/photo-1549637642-90187f64f420?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
-            title="Tech Startup Secures $2M Funding"
-            category="Growth Strategy"
-            description="Strategic guidance that helped a technology startup refine their business model and secure venture capital."
-          />
-          <CaseStudyCard 
-            image="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
-            title="Retail Chain Expands to 15 Locations"
-            category="Market Expansion"
-            description="Developing a scalable growth strategy that enabled a local retailer to expand across the region."
-          />
+          {caseStudiesData.slice(0, 3).map((caseStudy) => (
+            <HoverCard key={caseStudy.id} openDelay={200} closeDelay={100}>
+              <HoverCardTrigger asChild>
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={caseStudy.image} 
+                      alt={caseStudy.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                      }}
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="text-sm font-medium text-primary mb-2">Case Study</div>
+                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                    <p className="text-gray-600 mb-4">{caseStudy.description}</p>
+                  </div>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-full max-w-3xl" align="center">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-1/3">
+                    <img 
+                      src={caseStudy.image} 
+                      alt={caseStudy.title}
+                      className="w-full h-auto rounded-md shadow-sm object-cover" 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                      }}
+                    />
+                  </div>
+                  <div className="md:w-2/3">
+                    <h4 className="text-lg font-semibold mb-2">{caseStudy.title}</h4>
+                    <p className="text-sm mb-4">{caseStudy.fullDescription}</p>
+                    <Link 
+                      to="/case-studies" 
+                      className="text-primary font-medium inline-flex items-center hover:underline text-sm"
+                    >
+                      View More Case Studies <ArrowRight size={16} className="ml-1" />
+                    </Link>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ))}
         </div>
         
         <div className="text-center mt-12">
