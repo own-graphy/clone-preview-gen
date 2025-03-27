@@ -1,13 +1,14 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const [activeCaseStudy, setActiveCaseStudy] = useState<string | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,6 +44,61 @@ const Hero = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  const openCaseStudy = (id: string) => {
+    setActiveCaseStudy(id);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeCaseStudy = () => {
+    setActiveCaseStudy(null);
+    document.body.style.overflow = 'auto';
+  };
+
+  const caseStudiesData = [
+    {
+      id: "revenue",
+      title: "3X Revenue",
+      description: "How we helped a retail client triple their revenue in just 18 months.",
+      fullDescription: "Our strategic approach involved a complete overhaul of the client's sales funnel, implementation of data-driven marketing campaigns, and optimization of their pricing strategy. By focusing on high-value customer segments and improving conversion rates at each stage of the customer journey, we were able to achieve a 300% increase in revenue within 18 months.",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      id: "cost-reduction",
+      title: "10%-20% Sales Cost Reduction",
+      description: "Optimizing sales processes for a manufacturing firm.",
+      fullDescription: "Through a detailed analysis of the sales process, we identified inefficiencies in resource allocation, redundant steps, and opportunities for automation. By streamlining the sales workflow and implementing targeted technology solutions, we reduced sales operational costs by 17.5% while simultaneously increasing sales team productivity by 22%.",
+      image: "https://images.unsplash.com/photo-1550565118-3a14e8d0386f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      id: "market-penetration",
+      title: "Increased Market Penetration",
+      description: "Expanding into new markets with targeted strategies.",
+      fullDescription: "Our client needed to expand beyond their existing market but lacked the data and strategy to do so effectively. We conducted comprehensive market analysis, identified high-potential segments, and developed a tailored entry strategy. Within one year, the client successfully established presence in three new regional markets, capturing an average of 12% market share in each.",
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      id: "brand-awareness",
+      title: "Brand Awareness",
+      description: "Building recognition and trust in competitive markets.",
+      fullDescription: "For this emerging tech startup, we developed a comprehensive brand strategy focusing on their unique value proposition. Through strategic content marketing, industry partnerships, and targeted PR campaigns, we increased brand recognition by 155% and improved positive sentiment scores by 43% within 12 months, positioning them as thought leaders in their niche.",
+      image: "https://images.unsplash.com/photo-1559526324-593bc073d938?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      id: "multichannel",
+      title: "Multichannel Presence",
+      description: "Creating an integrated omnichannel customer experience.",
+      fullDescription: "Our client struggled with disconnected customer experiences across different channels. We implemented an integrated omnichannel strategy, unifying customer data and creating seamless transitions between online, mobile, and physical touchpoints. The result was a 78% increase in cross-channel customer engagement and a 45% improvement in customer retention rates.",
+      image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      id: "ebitda",
+      title: "2X EBITDA",
+      description: "Doubling earnings before interest, taxes, depreciation & amortization.",
+      fullDescription: "This mid-sized manufacturing business was struggling with profitability despite strong revenue. We conducted a comprehensive operational and financial analysis, identifying key inefficiencies in production processes, supply chain management, and financial controls. Our implementation plan resulted in doubling EBITDA within 24 months while creating sustainable systems for continued profitability.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+    }
+  ];
 
   return (
     <section className="relative py-20 md:py-32">
@@ -145,30 +201,22 @@ const Hero = () => {
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <CaseStudyCard 
-            title="3X Revenue" 
-            description="How we helped a retail client triple their revenue in just 18 months."
-          />
-          <CaseStudyCard 
-            title="10%-20% Sales Cost Reduction" 
-            description="Optimizing sales processes for a manufacturing firm."
-          />
-          <CaseStudyCard 
-            title="Increased Market Penetration" 
-            description="Expanding into new markets with targeted strategies."
-          />
-          <CaseStudyCard 
-            title="Brand Awareness" 
-            description="Building recognition and trust in competitive markets."
-          />
-          <CaseStudyCard 
-            title="Multichannel Presence" 
-            description="Creating an integrated omnichannel customer experience."
-          />
-          <CaseStudyCard 
-            title="2X EBITDA" 
-            description="Doubling earnings before interest, taxes, depreciation & amortization."
-          />
+          {caseStudiesData.map((caseStudy) => (
+            <div 
+              key={caseStudy.id}
+              className="group relative cursor-pointer"
+              onClick={() => openCaseStudy(caseStudy.id)}
+            >
+              <div className="glass p-6 rounded-xl group-hover:bg-white/10 transition-all duration-300 h-full flex flex-col justify-between">
+                <h3 className="text-lg font-semibold text-white group-hover:text-primary transition-colors">{caseStudy.title}</h3>
+                
+                {/* Hover effect - Popover */}
+                <div className="absolute inset-0 bg-darkGray/90 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10">
+                  <p className="text-sm text-gray-200">{caseStudy.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       
@@ -234,6 +282,51 @@ const Hero = () => {
           />
         </div>
       </div>
+
+      {/* Full-screen Case Study Pop-up */}
+      {activeCaseStudy && (
+        <div className="fixed inset-0 bg-darkGray/95 z-50 overflow-y-auto">
+          <div className="container mx-auto px-4 py-12">
+            <button 
+              onClick={closeCaseStudy} 
+              className="absolute top-6 right-6 text-white hover:text-gray-300 p-2"
+              aria-label="Close"
+            >
+              <X size={24} />
+            </button>
+
+            {caseStudiesData.filter(cs => cs.id === activeCaseStudy).map(caseStudy => (
+              <div key={caseStudy.id} className="max-w-6xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <img 
+                      src={caseStudy.image} 
+                      alt={caseStudy.title}
+                      className="w-full h-auto rounded-xl shadow-lg" 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://placehold.co/800x600/6366F1/FFFFFF?text=Case+Study';
+                      }}
+                    />
+                  </div>
+                  <div className="text-white">
+                    <div className="text-sm font-medium text-primary mb-3">Case Study</div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6">{caseStudy.title}</h2>
+                    <p className="text-lg mb-6">{caseStudy.description}</p>
+                    <p className="text-gray-300 mb-8">{caseStudy.fullDescription}</p>
+                    <Link 
+                      to="/case-studies" 
+                      className="bg-primary text-white font-medium px-6 py-3 rounded-full hover:bg-primary/90 transition-default inline-flex items-center"
+                    >
+                      View More Case Studies
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
@@ -248,26 +341,6 @@ const ServiceHighlight: React.FC<ServiceHighlightProps> = ({ title, description 
     <div className="glass p-6 rounded-xl group hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg">
       <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-primary transition-colors">{title}</h3>
       <p className="text-gray-300 text-sm">{description}</p>
-    </div>
-  );
-};
-
-interface CaseStudyCardProps {
-  title: string;
-  description: string;
-}
-
-const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ title, description }) => {
-  return (
-    <div className="group relative">
-      <div className="glass p-6 rounded-xl group-hover:bg-white/10 transition-all duration-300 h-full flex flex-col justify-between">
-        <h3 className="text-lg font-semibold text-white group-hover:text-primary transition-colors">{title}</h3>
-        
-        {/* Hover effect - Popover */}
-        <div className="absolute inset-0 bg-darkGray/90 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10">
-          <p className="text-sm text-gray-200">{description}</p>
-        </div>
-      </div>
     </div>
   );
 };

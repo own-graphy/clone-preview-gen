@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '../components/ui/hover-card';
 
 const CaseStudies: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('All Industries');
@@ -106,7 +105,7 @@ const CaseStudies: React.FC = () => {
               </div>
             </div>
             
-            {/* Case Studies Grid */}
+            {/* Case Studies Grid - Removed HoverCard/hover effects */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               <CaseStudyCard 
                 image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
@@ -188,50 +187,31 @@ interface CaseStudyCardProps {
 
 const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ image, title, category, metrics, description, fullContent }) => {
   return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
-        <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
-          <div className="h-48 overflow-hidden">
-            <img 
-              src={image} 
-              alt={title} 
-              className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
-              }}
-            />
-          </div>
-          <div className="p-6">
-            <div className="text-sm font-medium text-primary mb-2">{category}</div>
-            <h3 className="text-xl font-semibold text-black mb-3">{title}</h3>
-            <div className="flex gap-4 mb-3">
-              {metrics.map((metric, index) => (
-                <div key={index} className="text-sm text-black bg-gray-100 px-3 py-1 rounded-full">{metric}</div>
-              ))}
-            </div>
-            <p className="text-gray-700 mb-4">{description}</p>
-            <button className="text-primary font-medium inline-flex items-center">
-              Read Case Study <ArrowRight size={16} className="ml-1" />
-            </button>
-          </div>
+    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+      <div className="h-48 overflow-hidden">
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+          }}
+        />
+      </div>
+      <div className="p-6">
+        <div className="text-sm font-medium text-primary mb-2">{category}</div>
+        <h3 className="text-xl font-semibold text-black mb-3">{title}</h3>
+        <div className="flex gap-4 mb-3 flex-wrap">
+          {metrics.map((metric, index) => (
+            <div key={index} className="text-sm text-black bg-gray-100 px-3 py-1 rounded-full">{metric}</div>
+          ))}
         </div>
-      </HoverCardTrigger>
-      <HoverCardContent className="w-full max-w-md p-6 bg-white">
-        <div>
-          <h4 className="text-lg font-semibold text-black mb-2">{title}</h4>
-          <div className="text-sm font-medium text-primary mb-3">{category}</div>
-          <p className="text-gray-800 mb-4">{fullContent}</p>
-          <div className="flex flex-wrap gap-3 mb-4">
-            {metrics.map((metric, index) => (
-              <div key={index} className="text-sm text-black bg-gray-100 px-3 py-1 rounded-full">{metric}</div>
-            ))}
-          </div>
-          <button className="text-primary font-medium inline-flex items-center">
-            View Full Case Study <ArrowRight size={16} className="ml-1" />
-          </button>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
+        <p className="text-gray-700 mb-4">{description}</p>
+        <button className="text-primary font-medium inline-flex items-center">
+          Read Case Study <ArrowRight size={16} className="ml-1" />
+        </button>
+      </div>
+    </div>
   );
 };
 
