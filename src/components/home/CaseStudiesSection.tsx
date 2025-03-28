@@ -1,11 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { caseStudiesData } from '@/data/caseStudies';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const CaseStudiesSection: React.FC = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -18,51 +23,101 @@ const CaseStudiesSection: React.FC = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {caseStudiesData.slice(0, 3).map((caseStudy) => (
-            <HoverCard key={caseStudy.id} openDelay={200} closeDelay={100}>
-              <HoverCardTrigger asChild>
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={caseStudy.image} 
-                      alt={caseStudy.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
-                      }}
-                    />
+            isMobile ? (
+              // Mobile view - opens sheet on click
+              <Dialog key={caseStudy.id}>
+                <DialogTrigger asChild>
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={caseStudy.image} 
+                        alt={caseStudy.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                        }}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="text-sm font-medium text-primary mb-2">Case Study</div>
+                      <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                      <p className="text-gray-600 mb-4">{caseStudy.description}</p>
+                    </div>
                   </div>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] p-0">
                   <div className="p-6">
-                    <div className="text-sm font-medium text-primary mb-2">Case Study</div>
-                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                    <p className="text-gray-600 mb-4">{caseStudy.description}</p>
+                    <div className="space-y-6">
+                      <img 
+                        src={caseStudy.image} 
+                        alt={caseStudy.title}
+                        className="w-full h-auto rounded-md shadow-sm object-cover" 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                        }}
+                      />
+                      <div>
+                        <h3 className="text-2xl font-bold mb-4">{caseStudy.title}</h3>
+                        <p className="text-gray-600 mb-6">{caseStudy.fullDescription}</p>
+                        <Link 
+                          to="/case-studies" 
+                          className="text-primary font-medium inline-flex items-center hover:underline"
+                        >
+                          View More Case Studies <ArrowRight size={16} className="ml-1" />
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-full max-w-3xl" align="center">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="md:w-1/3">
-                    <img 
-                      src={caseStudy.image} 
-                      alt={caseStudy.title}
-                      className="w-full h-auto rounded-md shadow-sm object-cover" 
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
-                      }}
-                    />
+                </DialogContent>
+              </Dialog>
+            ) : (
+              // Desktop view - hovers
+              <HoverCard key={caseStudy.id} openDelay={200} closeDelay={100}>
+                <HoverCardTrigger asChild>
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={caseStudy.image} 
+                        alt={caseStudy.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                        }}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="text-sm font-medium text-primary mb-2">Case Study</div>
+                      <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                      <p className="text-gray-600 mb-4">{caseStudy.description}</p>
+                    </div>
                   </div>
-                  <div className="md:w-2/3">
-                    <h4 className="text-lg font-semibold mb-2">{caseStudy.title}</h4>
-                    <p className="text-sm mb-4">{caseStudy.fullDescription}</p>
-                    <Link 
-                      to="/case-studies" 
-                      className="text-primary font-medium inline-flex items-center hover:underline text-sm"
-                    >
-                      View More Case Studies <ArrowRight size={16} className="ml-1" />
-                    </Link>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-full max-w-6xl p-0" align="center">
+                  <div className="flex flex-col md:flex-row p-6">
+                    <div className="md:w-1/3">
+                      <img 
+                        src={caseStudy.image} 
+                        alt={caseStudy.title}
+                        className="w-full h-auto rounded-md shadow-sm object-cover" 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                        }}
+                      />
+                    </div>
+                    <div className="md:w-2/3 md:pl-6 pt-4 md:pt-0">
+                      <h4 className="text-xl font-semibold mb-3">{caseStudy.title}</h4>
+                      <p className="text-gray-600 mb-4">{caseStudy.fullDescription}</p>
+                      <Link 
+                        to="/case-studies" 
+                        className="text-primary font-medium inline-flex items-center hover:underline"
+                      >
+                        View More Case Studies <ArrowRight size={16} className="ml-1" />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+                </HoverCardContent>
+              </HoverCard>
+            )
           ))}
         </div>
         
