@@ -1,9 +1,8 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X } from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { caseStudiesData } from '@/data/caseStudies';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -24,7 +23,7 @@ const CaseStudiesSection: React.FC = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {caseStudiesData.slice(0, 3).map((caseStudy) => (
             isMobile ? (
-              // Mobile view - opens sheet on click
+              // Mobile view - opens dialog on click
               <Dialog key={caseStudy.id}>
                 <DialogTrigger asChild>
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
@@ -71,8 +70,8 @@ const CaseStudiesSection: React.FC = () => {
                 </DialogContent>
               </Dialog>
             ) : (
-              // Desktop view - hovers
-              <HoverCard key={caseStudy.id} openDelay={200} closeDelay={100}>
+              // Desktop view - uses hover card
+              <HoverCard key={caseStudy.id} openDelay={100} closeDelay={100}>
                 <HoverCardTrigger asChild>
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
                     <div className="h-48 overflow-hidden">
@@ -92,9 +91,9 @@ const CaseStudiesSection: React.FC = () => {
                     </div>
                   </div>
                 </HoverCardTrigger>
-                <HoverCardContent className="w-full max-w-6xl p-0" align="center">
-                  <div className="flex flex-col md:flex-row p-6">
-                    <div className="md:w-1/3">
+                <HoverCardContent className="w-auto max-w-[95vw] md:max-w-[600px] p-0" side="right">
+                  <div className="p-6">
+                    <div className="space-y-4">
                       <img 
                         src={caseStudy.image} 
                         alt={caseStudy.title}
@@ -103,16 +102,16 @@ const CaseStudiesSection: React.FC = () => {
                           (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
                         }}
                       />
-                    </div>
-                    <div className="md:w-2/3 md:pl-6 pt-4 md:pt-0">
-                      <h4 className="text-xl font-semibold mb-3">{caseStudy.title}</h4>
-                      <p className="text-gray-600 mb-4">{caseStudy.fullDescription}</p>
-                      <Link 
-                        to="/case-studies" 
-                        className="text-primary font-medium inline-flex items-center hover:underline"
-                      >
-                        View More Case Studies <ArrowRight size={16} className="ml-1" />
-                      </Link>
+                      <div>
+                        <h3 className="text-xl font-bold mb-2">{caseStudy.title}</h3>
+                        <p className="text-gray-600 mb-4">{caseStudy.fullDescription}</p>
+                        <Link 
+                          to="/case-studies" 
+                          className="text-primary font-medium inline-flex items-center hover:underline"
+                        >
+                          View More Case Studies <ArrowRight size={16} className="ml-1" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </HoverCardContent>
