@@ -27,6 +27,7 @@ const CaseStudiesSection: React.FC = () => {
               <Dialog key={caseStudy.id}>
                 <DialogTrigger asChild>
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
+                    {/* Always show image and title */}
                     <div className="h-48 overflow-hidden">
                       <img 
                         src={caseStudy.image} 
@@ -70,14 +71,15 @@ const CaseStudiesSection: React.FC = () => {
               </Dialog>
             ) : (
               // Desktop view - uses hover card
-              <HoverCard key={caseStudy.id} openDelay={100} closeDelay={100}>
+              <HoverCard key={caseStudy.id}>
                 <HoverCardTrigger asChild>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 cursor-pointer">
+                    {/* Always show image and title */}
                     <div className="h-48 overflow-hidden">
                       <img 
                         src={caseStudy.image} 
                         alt={caseStudy.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        className="w-full h-full object-cover hover:scale-105 transition duration-500"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
                         }}
@@ -89,7 +91,7 @@ const CaseStudiesSection: React.FC = () => {
                     </div>
                   </div>
                 </HoverCardTrigger>
-                <HoverCardContent className="w-auto max-w-[95vw] md:max-w-[600px] p-0" side="right">
+                <HoverCardContent className="w-96 p-0" side="right">
                   <div className="p-6">
                     <div className="space-y-4">
                       <img 
