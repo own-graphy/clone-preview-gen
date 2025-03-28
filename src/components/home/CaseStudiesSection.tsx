@@ -40,7 +40,6 @@ const CaseStudiesSection: React.FC = () => {
                     <div className="p-6">
                       <div className="text-sm font-medium text-primary mb-2">Case Study</div>
                       <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                      <p className="text-gray-600 mb-4">{caseStudy.description}</p>
                     </div>
                   </div>
                 </DialogTrigger>
@@ -87,7 +86,6 @@ const CaseStudiesSection: React.FC = () => {
                     <div className="p-6">
                       <div className="text-sm font-medium text-primary mb-2">Case Study</div>
                       <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                      <p className="text-gray-600 mb-4">{caseStudy.description}</p>
                     </div>
                   </div>
                 </HoverCardTrigger>
