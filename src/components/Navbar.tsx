@@ -41,7 +41,7 @@ const searchData: SearchItem[] = [
     title: cs.title,
     type: 'case-study' as const,
     url: `/case-studies#${cs.id}`,
-    description: cs.shortDescription
+    description: cs.description
   })),
 ];
 
