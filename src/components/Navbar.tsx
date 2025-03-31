@@ -1,59 +1,16 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
 import { Menu, X, Search, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { 
-  Command, 
-  CommandDialog, 
-  CommandInput, 
-  CommandList, 
-  CommandEmpty, 
-  CommandGroup, 
-  CommandItem 
-} from '@/components/ui/command';
-import { caseStudiesData } from '@/data/caseStudies';
-
-// Define our search data structure
-type SearchItem = {
-  id: string;
-  title: string;
-  type: 'menu' | 'service' | 'case-study';
-  url: string;
-  description?: string;
-};
-
-// Create search data
-const searchData: SearchItem[] = [
-  // Menu items
-  { id: 'home', title: 'Home', type: 'menu', url: '/' },
-  { id: 'services', title: 'Offerings', type: 'menu', url: '/services' },
-  { id: 'case-studies', title: 'Case Studies', type: 'menu', url: '/case-studies' },
-  { id: 'about', title: 'About', type: 'menu', url: '/about' },
-  { id: 'careers', title: 'Careers', type: 'menu', url: '/careers' },
-  { id: 'contact', title: 'Contact', type: 'menu', url: '/contact' },
-  
-  // Add case studies
-  ...caseStudiesData.map(cs => ({
-    id: cs.id,
-    title: cs.title,
-    type: 'case-study' as const,
-    url: `/case-studies#${cs.id}`,
-    description: cs.description
-  })),
-];
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -62,35 +19,11 @@ const Navbar: React.FC = () => {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
-    setSearchQuery('');
     if (isSearchOpen === false) {
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 300);
     }
-  };
-
-  // Handle search
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
-    
-    if (value.trim() === '') {
-      setSearchResults([]);
-      return;
-    }
-    
-    const filtered = searchData.filter(item => 
-      item.title.toLowerCase().includes(value.toLowerCase()) || 
-      item.description?.toLowerCase().includes(value.toLowerCase())
-    );
-    
-    setSearchResults(filtered);
-  };
-
-  // Handle search result selection
-  const handleSelectSearchResult = (item: SearchItem) => {
-    navigate(item.url);
-    setIsSearchOpen(false);
   };
 
   useEffect(() => {
@@ -141,7 +74,7 @@ const Navbar: React.FC = () => {
           
           <button 
             onClick={toggleSearch} 
-            className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20`}
+            className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20 ${isSearchOpen ? 'hidden' : 'block'}`}
             aria-label="Search"
           >
             <Search size={22} />
@@ -149,7 +82,7 @@ const Navbar: React.FC = () => {
 
           {isMenuOpen && (
             <div className="fixed inset-0 z-50 flex">
-              <div className="w-3/4 sm:w-[30%] lg:w-[20%] h-full bg-[#1A1F2C] p-8">
+              <div className="w-3/4 sm:w-[30%] lg:w-[20%] h-full bg-[#0A0E17] p-8">
                 <div className="flex items-center justify-between mb-10">
                   <div className="flex items-center space-x-2">
                     <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
@@ -193,53 +126,25 @@ const Navbar: React.FC = () => {
             </div>
           )}
 
-          {/* Command Dialog for Search */}
-          <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-            <Command>
-              <CommandInput 
-                placeholder="Search for anything..." 
-                value={searchQuery}
-                onValueChange={handleSearch}
-                autoFocus
-              />
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                {searchResults.length > 0 && (
-                  <CommandGroup heading="Navigation">
-                    {searchResults.filter(item => item.type === 'menu').map((item) => (
-                      <CommandItem 
-                        key={item.id}
-                        onSelect={() => handleSelectSearchResult(item)}
-                        className="flex items-center"
-                      >
-                        {item.title}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
-                {searchResults.filter(item => item.type === 'case-study').length > 0 && (
-                  <CommandGroup heading="Case Studies">
-                    {searchResults.filter(item => item.type === 'case-study').map((item) => (
-                      <CommandItem 
-                        key={item.id}
-                        onSelect={() => handleSelectSearchResult(item)}
-                        className="flex flex-col items-start"
-                      >
-                        <span className="font-medium">{item.title}</span>
-                        {item.description && (
-                          <span className="text-xs text-muted-foreground truncate max-w-full">
-                            {item.description.length > 60 
-                              ? `${item.description.substring(0, 60)}...` 
-                              : item.description}
-                          </span>
-                        )}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
-              </CommandList>
-            </Command>
-          </CommandDialog>
+          {isSearchOpen && (
+            <div className="absolute inset-0 bg-darkGray/95 flex items-center px-4 z-10">
+              <div className="w-full max-w-2xl mx-auto relative">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className="w-full bg-gray-800/50 text-white py-3 px-4 pr-10 rounded-[3px] border border-gray-700 focus:border-primary focus:outline-none"
+                  placeholder="Search..."
+                  autoFocus
+                />
+                <button 
+                  onClick={toggleSearch}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>
