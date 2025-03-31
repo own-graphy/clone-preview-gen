@@ -21,11 +21,11 @@ const CaseStudiesSection: React.FC = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {caseStudiesData.map((caseStudy) => (
+          {caseStudiesData.map((caseStudy, index) => (
             <div key={caseStudy.id} className="relative">
               <div 
                 className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer"
-                onMouseEnter={() => !isMobile && setHoveredCaseStudy(caseStudy.id)}
+                onMouseEnter={() => !isMobile && setHoveredCaseStudy(index)}
                 onMouseLeave={() => !isMobile && setHoveredCaseStudy(null)}
               >
                 {isMobile ? (
@@ -103,7 +103,7 @@ const CaseStudiesSection: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setHoveredCaseStudy(null)}>
             <div className="bg-white w-[60%] max-h-[80vh] overflow-auto rounded-lg shadow-xl p-0" onClick={(e) => e.stopPropagation()}>
               {(() => {
-                const study = caseStudiesData.find(cs => cs.id === hoveredCaseStudy);
+                const study = caseStudiesData[hoveredCaseStudy];
                 return study ? (
                   <div className="flex flex-col md:flex-row">
                     <div className="md:w-1/2">
