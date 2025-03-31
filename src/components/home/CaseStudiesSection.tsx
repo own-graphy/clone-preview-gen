@@ -25,7 +25,8 @@ const CaseStudiesSection: React.FC = () => {
             <div key={caseStudy.id} className="relative">
               <div 
                 className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer"
-                onClick={() => !isMobile && setHoveredCaseStudy(index)}
+                onMouseEnter={() => !isMobile && setHoveredCaseStudy(index)}
+                onMouseLeave={() => !isMobile && setHoveredCaseStudy(null)}
               >
                 {isMobile ? (
                   // Mobile view - opens dialog on click
@@ -100,12 +101,10 @@ const CaseStudiesSection: React.FC = () => {
         
         {hoveredCaseStudy !== null && !isMobile && (
           <div 
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" 
-            onClick={() => setHoveredCaseStudy(null)}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
           >
             <div 
-              className="bg-white w-[60%] max-h-[80vh] overflow-auto rounded-lg shadow-xl p-0" 
-              onClick={(e) => e.stopPropagation()}
+              className="bg-white w-[75%] max-h-[80vh] overflow-auto rounded-lg shadow-xl p-0"
             >
               {(() => {
                 const study = caseStudiesData[hoveredCaseStudy];
