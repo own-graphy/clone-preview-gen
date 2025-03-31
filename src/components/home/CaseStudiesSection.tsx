@@ -21,7 +21,7 @@ const CaseStudiesSection: React.FC = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {caseStudiesData.slice(0, 3).map((caseStudy) => (
+          {caseStudiesData.slice(0, 5).map((caseStudy) => (
             isMobile ? (
               // Mobile view - opens dialog on click
               <Dialog key={caseStudy.id}>
@@ -70,52 +70,49 @@ const CaseStudiesSection: React.FC = () => {
                 </DialogContent>
               </Dialog>
             ) : (
-              // Desktop view - uses hover card
-              <HoverCard key={caseStudy.id}>
-                <HoverCardTrigger asChild>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 cursor-pointer">
-                    {/* Always show image and title */}
-                    <div className="h-48 overflow-hidden">
-                      <img 
-                        src={caseStudy.image} 
-                        alt={caseStudy.title} 
-                        className="w-full h-full object-cover hover:scale-105 transition duration-500"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
-                        }}
-                      />
-                    </div>
-                    <div className="p-6">
-                      <div className="text-sm font-medium text-primary mb-2">Case Study</div>
-                      <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                    </div>
+              // Desktop view - uses hover card with proper hover effect
+              <div key={caseStudy.id} className="relative group">
+                {/* Base card with image and title always visible */}
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={caseStudy.image} 
+                      alt={caseStudy.title} 
+                      className="w-full h-full object-cover transition duration-500"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
+                      }}
+                    />
                   </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-96 p-0" side="right">
                   <div className="p-6">
-                    <div className="space-y-4">
-                      <img 
-                        src={caseStudy.image} 
-                        alt={caseStudy.title}
-                        className="w-full h-auto rounded-md shadow-sm object-cover" 
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
-                        }}
-                      />
-                      <div>
-                        <h3 className="text-xl font-bold mb-2">{caseStudy.title}</h3>
-                        <p className="text-gray-600 mb-4">{caseStudy.fullDescription}</p>
-                        <Link 
-                          to="/case-studies" 
-                          className="text-primary font-medium inline-flex items-center hover:underline"
-                        >
-                          View More Case Studies <ArrowRight size={16} className="ml-1" />
-                        </Link>
-                      </div>
-                    </div>
+                    <div className="text-sm font-medium text-primary mb-2">Case Study</div>
+                    <h3 className="text-xl font-semibold">{caseStudy.title}</h3>
                   </div>
-                </HoverCardContent>
-              </HoverCard>
+                </div>
+                
+                {/* Hover overlay that appears on hover */}
+                <div className="absolute inset-0 bg-primary/90 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col p-6 text-white overflow-y-auto">
+                  <div className="text-sm font-medium mb-2">Case Study</div>
+                  <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                  <div className="mb-4 flex-shrink-0 h-32 overflow-hidden rounded-md">
+                    <img 
+                      src={caseStudy.image} 
+                      alt={caseStudy.title} 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/FFFFFF/6366F1?text=Case+Study';
+                      }}
+                    />
+                  </div>
+                  <p className="text-white/90 mb-4 overflow-y-auto flex-grow text-sm">{caseStudy.fullDescription}</p>
+                  <Link 
+                    to="/case-studies" 
+                    className="text-white font-medium inline-flex items-center hover:underline mt-auto"
+                  >
+                    View More Case Studies <ArrowRight size={16} className="ml-1" />
+                  </Link>
+                </div>
+              </div>
             )
           ))}
         </div>
