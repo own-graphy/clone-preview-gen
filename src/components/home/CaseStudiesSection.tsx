@@ -21,7 +21,7 @@ const CaseStudiesSection: React.FC = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {caseStudiesData.slice(0, 3).map((caseStudy) => (
+          {caseStudiesData.map((caseStudy) => (
             isMobile ? (
               // Mobile view - opens dialog on click
               <Dialog key={caseStudy.id}>
