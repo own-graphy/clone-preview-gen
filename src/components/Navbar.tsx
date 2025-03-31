@@ -1,16 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
 import { Menu, X, Search, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { caseStudiesData } from '@/data/caseStudies';
+
+type SearchItemType = 'menu' | 'case-study' | 'service';
+interface SearchItem {
+  id: string;
+  type: SearchItemType;
+  title: string;
+  path: string;
+  description?: string;
+}
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
+
+  const searchableItems: SearchItem[] = useMemo(() => [
+    { id: 'menu-home', type: 'menu', title: 'Home', path: '/' },
+    { id: 'menu-services', type: 'menu', title: 'Offerings', path: '/services' },
+    { id: 'menu-case-studies', type: 'menu', title: 'Case Studies', path: '/case-studies' },
+    { id: 'menu-about', type: 'menu', title: 'About', path: '/about' },
+    { id: 'menu-careers', type: 'menu', title: 'Careers', path: '/careers' },
+    { id: 'menu-contact', type: 'menu', title: 'Contact', path: '/contact' },
+    
+    ...caseStudiesData.map(study => ({
+      id: `case-study-${study.id}`,
+      type: 'case-study' as SearchItemType,
+      title: study.title,
+      path: '/case-studies',
+      description: study.description
+    })),
+    
+    { id: 'service-1', type: 'service', title: 'Strategy Consulting', path: '/services', description: 'Business strategy and planning services' },
+    { id: 'service-2', type: 'service', title: 'Digital Transformation', path: '/services', description: 'Modernize your business with digital solutions' },
+    { id: 'service-3', type: 'service', title: 'Data Analytics', path: '/services', description: 'Insights and analytics services' },
+  ], []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,11 +52,16 @@ const Navbar: React.FC = () => {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
-    if (isSearchOpen === false) {
+    if (!isSearchOpen) {
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 300);
     }
+  };
+
+  const handleSearchSelect = (item: SearchItem) => {
+    setIsSearchOpen(false);
+    // Navigate or other actions can be performed here
   };
 
   useEffect(() => {
@@ -45,6 +83,18 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.key === 'k' && (event.metaKey || event.ctrlKey)) || event.key === '/') {
+        event.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-darkGray/90 backdrop-blur-md shadow-md' : 'bg-darkGray/70 backdrop-blur-sm'}`}>
@@ -74,7 +124,7 @@ const Navbar: React.FC = () => {
           
           <button 
             onClick={toggleSearch} 
-            className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20 ${isSearchOpen ? 'hidden' : 'block'}`}
+            className="text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20"
             aria-label="Search"
           >
             <Search size={22} />
@@ -126,25 +176,69 @@ const Navbar: React.FC = () => {
             </div>
           )}
 
-          {isSearchOpen && (
-            <div className="absolute inset-0 bg-darkGray/95 flex items-center px-4 z-10">
-              <div className="w-full max-w-2xl mx-auto relative">
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  className="w-full bg-gray-800/50 text-white py-3 px-4 pr-10 rounded-[3px] border border-gray-700 focus:border-primary focus:outline-none"
-                  placeholder="Search..."
-                  autoFocus
-                />
-                <button 
-                  onClick={toggleSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-            </div>
-          )}
+          <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+            <Command>
+              <CommandInput placeholder="Search across the app..." />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                
+                <CommandGroup heading="Menu">
+                  {searchableItems
+                    .filter(item => item.type === 'menu')
+                    .map((item) => (
+                      <CommandItem key={item.id} onSelect={() => {
+                        setIsSearchOpen(false);
+                        window.location.href = item.path;
+                      }}>
+                        <Link to={item.path} className="flex w-full">
+                          {item.title}
+                        </Link>
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+                
+                <CommandGroup heading="Case Studies">
+                  {searchableItems
+                    .filter(item => item.type === 'case-study')
+                    .map((item) => (
+                      <CommandItem key={item.id} onSelect={() => {
+                        setIsSearchOpen(false);
+                        window.location.href = item.path;
+                      }}>
+                        <div className="flex flex-col">
+                          <span>{item.title}</span>
+                          {item.description && (
+                            <span className="text-xs text-gray-500 truncate">
+                              {item.description.substring(0, 60)}...
+                            </span>
+                          )}
+                        </div>
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+                
+                <CommandGroup heading="Services">
+                  {searchableItems
+                    .filter(item => item.type === 'service')
+                    .map((item) => (
+                      <CommandItem key={item.id} onSelect={() => {
+                        setIsSearchOpen(false);
+                        window.location.href = item.path;
+                      }}>
+                        <div className="flex flex-col">
+                          <span>{item.title}</span>
+                          {item.description && (
+                            <span className="text-xs text-gray-500 truncate">
+                              {item.description}
+                            </span>
+                          )}
+                        </div>
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </CommandDialog>
         </div>
       </div>
     </header>
