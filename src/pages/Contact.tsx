@@ -122,15 +122,15 @@ const Contact: React.FC = () => {
                           className="w-full px-4 py-2 bg-black text-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                           required
                         >
-                          <option value="">Select your industry</option>
-                          <option value="Manufacturing">Manufacturing</option>
-                          <option value="Retail">Retail</option>
-                          <option value="Technology">Technology</option>
-                          <option value="Healthcare">Healthcare</option>
-                          <option value="Financial Services">Financial Services</option>
-                          <option value="Education">Education</option>
-                          <option value="Hospitality">Hospitality</option>
-                          <option value="Other">Other</option>
+                          <option value="" className="text-white">Select your industry</option>
+                          <option value="Manufacturing" className="text-white">Manufacturing</option>
+                          <option value="Retail" className="text-white">Retail</option>
+                          <option value="Technology" className="text-white">Technology</option>
+                          <option value="Healthcare" className="text-white">Healthcare</option>
+                          <option value="Financial Services" className="text-white">Financial Services</option>
+                          <option value="Education" className="text-white">Education</option>
+                          <option value="Hospitality" className="text-white">Hospitality</option>
+                          <option value="Other" className="text-white">Other</option>
                         </select>
                       </div>
                     </div>
