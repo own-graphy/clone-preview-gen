@@ -25,8 +25,7 @@ const CaseStudiesSection: React.FC = () => {
             <div key={caseStudy.id} className="relative">
               <div 
                 className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group cursor-pointer"
-                onMouseEnter={() => !isMobile && setHoveredCaseStudy(index)}
-                onMouseLeave={() => !isMobile && setHoveredCaseStudy(null)}
+                onClick={() => !isMobile && setHoveredCaseStudy(index)}
               >
                 {isMobile ? (
                   // Mobile view - opens dialog on click
@@ -76,7 +75,7 @@ const CaseStudiesSection: React.FC = () => {
                     </DialogContent>
                   </Dialog>
                 ) : (
-                  // Desktop view - just the card that will show hover dialog
+                  // Desktop view - just the card that will show dialog on click
                   <>
                     <div className="h-48 overflow-hidden">
                       <img 
@@ -102,25 +101,27 @@ const CaseStudiesSection: React.FC = () => {
         {hoveredCaseStudy !== null && !isMobile && (
           <div 
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+            onClick={() => setHoveredCaseStudy(null)}
           >
             <div 
               className="bg-white w-[75%] max-h-[80vh] overflow-auto rounded-lg shadow-xl p-0"
+              onClick={(e) => e.stopPropagation()}
             >
               {(() => {
                 const study = caseStudiesData[hoveredCaseStudy];
                 return study ? (
                   <div className="flex flex-col md:flex-row">
-                    <div className="md:w-1/2">
+                    <div className="md:w-[30%] p-5">
                       <img 
                         src={study.image} 
                         alt={study.title}
-                        className="w-full h-full object-cover" 
+                        className="w-full h-full object-contain rounded-md" 
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/6366F1/FFFFFF?text=Case+Study';
                         }}
                       />
                     </div>
-                    <div className="p-8 md:w-1/2">
+                    <div className="p-8 md:w-[70%]">
                       <h3 className="text-2xl font-bold mb-4">{study.title}</h3>
                       <p className="text-gray-600 mb-6">{study.fullDescription}</p>
                       <Link 
