@@ -1,8 +1,10 @@
 
 import React, { useEffect } from 'react';
+import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import ProductShowcase from '@/components/ProductShowcase';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   // Add smooth scrolling for anchor links
@@ -27,12 +29,14 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
       <main>
         <Hero />
         <Features />
         <ProductShowcase />
       </main>
+      <Footer />
     </div>
   );
 };

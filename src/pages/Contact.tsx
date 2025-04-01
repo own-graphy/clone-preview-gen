@@ -106,7 +106,7 @@ const Contact: React.FC = () => {
                           name="companyName"
                           value={formState.companyName}
                           onChange={handleChange}
-                          className="w-full text-black"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -119,18 +119,18 @@ const Contact: React.FC = () => {
                           name="industryType"
                           value={formState.industryType}
                           onChange={handleChange}
-                          className="w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                          className="w-full px-4 py-2 bg-black text-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                           required
                         >
-                          <option value="" className="text-black">Select your industry</option>
-                          <option value="Manufacturing" className="text-black">Manufacturing</option>
-                          <option value="Retail" className="text-black">Retail</option>
-                          <option value="Technology" className="text-black">Technology</option>
-                          <option value="Healthcare" className="text-black">Healthcare</option>
-                          <option value="Financial Services" className="text-black">Financial Services</option>
-                          <option value="Education" className="text-black">Education</option>
-                          <option value="Hospitality" className="text-black">Hospitality</option>
-                          <option value="Other" className="text-black">Other</option>
+                          <option value="">Select your industry</option>
+                          <option value="Manufacturing">Manufacturing</option>
+                          <option value="Retail">Retail</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Financial Services">Financial Services</option>
+                          <option value="Education">Education</option>
+                          <option value="Hospitality">Hospitality</option>
+                          <option value="Other">Other</option>
                         </select>
                       </div>
                     </div>
@@ -146,7 +146,7 @@ const Contact: React.FC = () => {
                           name="email"
                           value={formState.email}
                           onChange={handleChange}
-                          className="w-full text-black"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -160,7 +160,7 @@ const Contact: React.FC = () => {
                           name="phone"
                           value={formState.phone}
                           onChange={handleChange}
-                          className="w-full text-black"
+                          className="w-full bg-black text-white"
                           required
                         />
                       </div>
@@ -176,7 +176,7 @@ const Contact: React.FC = () => {
                         rows={5}
                         value={formState.message}
                         onChange={handleChange}
-                        className="w-full text-black"
+                        className="w-full bg-black text-white"
                       />
                     </div>
                     
