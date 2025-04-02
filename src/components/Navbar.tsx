@@ -10,11 +10,6 @@ import {
   DrawerContent,
   DrawerPortal
 } from "@/components/ui/drawer";
-import { 
-  Dialog, 
-  DialogContent,
-  DialogTitle
-} from '@/components/ui/dialog';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,18 +65,22 @@ const Navbar: React.FC = () => {
   };
 
   const handleResultClick = (url: string) => {
-    closeSearch();
     if (url.includes('#')) {
       const [path, hash] = url.split('#');
       navigate(path);
+      closeSearch();
+      
       setTimeout(() => {
         const element = document.getElementById(hash);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        window.scrollTo(0, 0);
       }, 100);
     } else {
       navigate(url);
+      closeSearch();
+      window.scrollTo(0, 0);
     }
   };
 
@@ -150,7 +149,7 @@ const Navbar: React.FC = () => {
             <span className="font-semibold text-xl text-gray-100">Advizo</span>
           </Link>
           
-          <nav className="hidden md:flex items-center space-x-8 flex-grow justify-center ml-8">
+          <nav className={`hidden md:flex items-center space-x-8 flex-grow justify-center ml-8 ${isSearchOpen ? 'invisible' : 'visible'}`}>
             <NavLink to="/" label="Home" currentPath={location.pathname} />
             <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
             <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
@@ -161,7 +160,7 @@ const Navbar: React.FC = () => {
           
           <button 
             onClick={toggleSearch} 
-            className="text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20"
+            className={`text-gray-200 hover:text-white transition-colors focus:outline-none ml-auto md:ml-0 z-20 ${isSearchOpen ? 'hidden' : 'block'}`}
             aria-label="Search"
           >
             <Search size={22} />
@@ -181,7 +180,7 @@ const Navbar: React.FC = () => {
                     </DrawerClose>
                   </div>
                   
-                  <nav className="flex-grow flex flex-col p-6 space-y-6">
+                  <nav className="flex-grow flex flex-col p-6 space-y-4">
                     <MenuLink to="/" label="Home" active={location.pathname === "/"} />
                     <MenuLink to="/services" label="Offerings" active={location.pathname === "/services"} />
                     <MenuLink to="/case-studies" label="Case Studies" active={location.pathname === "/case-studies"} />
@@ -214,15 +213,17 @@ const Navbar: React.FC = () => {
 
           <div 
             ref={searchContainerRef}
-            className={`absolute top-0 left-0 h-full transition-all duration-300 ease-in-out flex items-center ${
+            className={`absolute top-0 left-0 h-auto my-auto transition-all duration-300 ease-in-out flex items-center ${
               isSearchOpen 
-                ? isMobile ? 'w-full px-2' : 'w-[calc(100%-90px)] mx-auto left-0 right-0'
+                ? isMobile ? 'w-full px-2' : 'w-[calc(100%-90px)] right-14'
                 : 'w-0 opacity-0'
             } bg-darkGray/90 backdrop-blur-md z-10 rounded-md border border-gray-700`}
             style={{ 
               padding: isSearchOpen ? '2px' : '0px',
-              height: isSearchOpen ? 'calc(100% - 4px)' : '100%',
-              margin: isSearchOpen ? '2px 0' : '0' 
+              height: isSearchOpen ? 'calc(100% - 10px)' : '100%',
+              margin: isSearchOpen ? '5px 0' : '0',
+              top: '50%',
+              transform: 'translateY(-50%)'
             }}
           >
             {isSearchOpen && (
@@ -233,7 +234,7 @@ const Navbar: React.FC = () => {
                     ref={searchInputRef}
                     type="text"
                     placeholder="Search across the site..."
-                    className="flex-grow px-3 py-1 bg-transparent border-none focus:outline-none text-white h-full"
+                    className="flex-grow px-3 py-1 bg-transparent border-none focus:outline-none text-white h-full text-sm"
                     value={searchQuery}
                     onChange={handleSearchChange}
                   />
@@ -270,7 +271,11 @@ const Navbar: React.FC = () => {
                     <div
                       key={index}
                       className="py-3 block hover:bg-gray-800/50 px-2 rounded-md cursor-pointer"
-                      onClick={() => handleResultClick(result.url)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleResultClick(result.url);
+                      }}
                     >
                       <h4 className="text-primary font-medium mb-1">{result.title}</h4>
                       <p className="text-gray-300 text-sm mb-1">{result.excerpt}</p>
