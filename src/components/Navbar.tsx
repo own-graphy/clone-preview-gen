@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logo } from '../assets';
 import { Menu, X, Search, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
@@ -26,6 +26,7 @@ const Navbar: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
 
   const toggleMenu = () => {
@@ -39,7 +40,17 @@ const Navbar: React.FC = () => {
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 300);
+    } else {
+      // Clear search when closing
+      setSearchQuery('');
+      setSearchResults([]);
     }
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -59,6 +70,11 @@ const Navbar: React.FC = () => {
     } else {
       setSearchResults([]);
     }
+  };
+
+  const handleResultClick = (url: string) => {
+    closeSearch();
+    navigate(url);
   };
 
   // Close search on click outside
@@ -226,7 +242,7 @@ const Navbar: React.FC = () => {
                   )}
                 </form>
                 <button 
-                  onClick={() => setIsSearchOpen(false)}
+                  onClick={closeSearch}
                   className="p-4 text-gray-400 hover:text-white"
                 >
                   <X size={20} />
@@ -242,16 +258,15 @@ const Navbar: React.FC = () => {
                 <h3 className="text-lg font-medium text-white mb-2">Search Results ({searchResults.length})</h3>
                 <div className="divide-y divide-gray-700">
                   {searchResults.map((result, index) => (
-                    <Link
+                    <div
                       key={index}
-                      to={result.url}
-                      className="py-3 block hover:bg-gray-800/50 px-2 rounded-md"
-                      onClick={() => setIsSearchOpen(false)}
+                      className="py-3 block hover:bg-gray-800/50 px-2 rounded-md cursor-pointer"
+                      onClick={() => handleResultClick(result.url)}
                     >
                       <h4 className="text-primary font-medium mb-1">{result.title}</h4>
                       <p className="text-gray-300 text-sm mb-1">{result.excerpt}</p>
                       <span className="text-gray-400 text-xs">{result.category}</span>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>

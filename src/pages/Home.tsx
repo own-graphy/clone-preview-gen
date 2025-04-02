@@ -3,6 +3,11 @@ import React from 'react';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import ProductShowcase from '@/components/ProductShowcase';
+import ServicesSection from '@/components/home/ServicesSection';
+import ImpactMetricsSection from '@/components/home/ImpactMetricsSection';
+import CaseStudiesSection from '@/components/home/CaseStudiesSection';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
+import CtaSection from '@/components/home/CtaSection';
 
 const Home: React.FC = () => {
   // Add smooth scrolling for anchor links
@@ -30,7 +35,12 @@ const Home: React.FC = () => {
     <main>
       <Hero />
       <Features />
+      <ServicesSection />
+      <ImpactMetricsSection />
+      <CaseStudiesSection />
+      <TestimonialsSection />
       <ProductShowcase />
+      <CtaSection />
     </main>
   );
 };
