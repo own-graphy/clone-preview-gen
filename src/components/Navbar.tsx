@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logo } from '../assets';
@@ -41,7 +40,6 @@ const Navbar: React.FC = () => {
         searchInputRef.current?.focus();
       }, 300);
     } else {
-      // Clear search when closing
       setSearchQuery('');
       setSearchResults([]);
     }
@@ -63,7 +61,6 @@ const Navbar: React.FC = () => {
     const query = e.target.value;
     setSearchQuery(query);
     
-    // Perform live search as user types
     if (query.length > 2) {
       const results = searchSiteContent(query);
       setSearchResults(results);
@@ -74,10 +71,20 @@ const Navbar: React.FC = () => {
 
   const handleResultClick = (url: string) => {
     closeSearch();
-    navigate(url);
+    if (url.includes('#')) {
+      const [path, hash] = url.split('#');
+      navigate(path);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    } else {
+      navigate(url);
+    }
   };
 
-  // Close search on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
@@ -160,7 +167,6 @@ const Navbar: React.FC = () => {
             <Search size={22} />
           </button>
 
-          {/* Sidebar drawer - updated styling for a premium look */}
           <Drawer open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <DrawerPortal>
               <DrawerContent className="w-1/4 min-w-[300px] max-h-screen p-0 h-full rounded-none bg-[#181C24]">
@@ -206,7 +212,6 @@ const Navbar: React.FC = () => {
             </DrawerPortal>
           </Drawer>
 
-          {/* Updated search bar that opens from left to right with proper width */}
           <div 
             ref={searchContainerRef}
             className={`absolute top-0 left-0 h-full transition-all duration-300 ease-in-out flex items-center ${
@@ -214,17 +219,21 @@ const Navbar: React.FC = () => {
                 ? isMobile ? 'w-full px-2' : 'w-[calc(100%-90px)] mx-auto left-0 right-0'
                 : 'w-0 opacity-0'
             } bg-darkGray/90 backdrop-blur-md z-10 rounded-md border border-gray-700`}
-            style={{ padding: isSearchOpen ? '2px' : '0px' }}
+            style={{ 
+              padding: isSearchOpen ? '2px' : '0px',
+              height: isSearchOpen ? 'calc(100% - 4px)' : '100%',
+              margin: isSearchOpen ? '2px 0' : '0' 
+            }}
           >
             {isSearchOpen && (
-              <div className="w-full flex items-center">
-                <form onSubmit={handleSearch} className="flex-grow flex items-center">
+              <div className="w-full flex items-center h-full">
+                <form onSubmit={handleSearch} className="flex-grow flex items-center h-full">
                   <Search className="ml-3 h-5 w-5 text-gray-400 shrink-0" />
                   <input
                     ref={searchInputRef}
                     type="text"
                     placeholder="Search across the site..."
-                    className="flex-grow px-3 py-2 bg-transparent border-none focus:outline-none text-white"
+                    className="flex-grow px-3 py-1 bg-transparent border-none focus:outline-none text-white h-full"
                     value={searchQuery}
                     onChange={handleSearchChange}
                   />
@@ -244,7 +253,7 @@ const Navbar: React.FC = () => {
                 </form>
                 <button 
                   onClick={closeSearch}
-                  className="p-4 text-gray-400 hover:text-white"
+                  className="p-2 text-gray-400 hover:text-white"
                 >
                   <X size={20} />
                 </button>
@@ -252,7 +261,6 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Search results dropdown */}
           {isSearchOpen && searchResults.length > 0 && (
             <div className="absolute top-full left-0 w-full bg-darkGray/95 backdrop-blur-lg shadow-lg max-h-[70vh] overflow-y-auto z-50 border-t border-gray-700 rounded-b-md">
               <div className="p-4">
@@ -330,9 +338,7 @@ interface SearchResult {
   category: string;
 }
 
-// Sample search function for demonstration - this would be more sophisticated in a real site
 const searchSiteContent = (query: string): SearchResult[] => {
-  // This is a mock search - in a real application, this would search actual content
   const allContent: SearchResult[] = [
     {
       title: "Strategic IT Consulting Services",
@@ -390,7 +396,6 @@ const searchSiteContent = (query: string): SearchResult[] => {
     }
   ];
 
-  // Filter content based on search query
   if (!query || query.trim() === '') return [];
   
   const lowerCaseQuery = query.toLowerCase();
