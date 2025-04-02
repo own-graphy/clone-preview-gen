@@ -1,8 +1,6 @@
 
 import React from 'react';
 import Hero from '@/components/Hero';
-import Features from '@/components/Features';
-import ProductShowcase from '@/components/ProductShowcase';
 import ServicesSection from '@/components/home/ServicesSection';
 import ImpactMetricsSection from '@/components/home/ImpactMetricsSection';
 import CaseStudiesSection from '@/components/home/CaseStudiesSection';
@@ -34,12 +32,10 @@ const Home: React.FC = () => {
   return (
     <main>
       <Hero />
-      <Features />
       <ServicesSection />
       <ImpactMetricsSection />
       <CaseStudiesSection />
       <TestimonialsSection />
-      <ProductShowcase />
       <CtaSection />
     </main>
   );

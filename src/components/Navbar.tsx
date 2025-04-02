@@ -160,10 +160,10 @@ const Navbar: React.FC = () => {
             <Search size={22} />
           </button>
 
-          {/* Sidebar drawer based on the provided image */}
+          {/* Sidebar drawer - updated styling for a premium look */}
           <Drawer open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <DrawerPortal>
-              <DrawerContent className="w-[380px] left-0 right-auto max-h-screen p-0 h-full rounded-none bg-[#181C24]">
+              <DrawerContent className="w-1/4 min-w-[300px] max-h-screen p-0 h-full rounded-none bg-[#181C24]">
                 <div className="h-full flex flex-col">
                   <div className="flex items-center justify-between p-6 pb-4">
                     <div className="flex items-center space-x-2">
@@ -175,7 +175,7 @@ const Navbar: React.FC = () => {
                     </DrawerClose>
                   </div>
                   
-                  <nav className="flex-grow flex flex-col p-6 space-y-8">
+                  <nav className="flex-grow flex flex-col p-6 space-y-6">
                     <MenuLink to="/" label="Home" active={location.pathname === "/"} />
                     <MenuLink to="/services" label="Offerings" active={location.pathname === "/services"} />
                     <MenuLink to="/case-studies" label="Case Studies" active={location.pathname === "/case-studies"} />
@@ -206,14 +206,15 @@ const Navbar: React.FC = () => {
             </DrawerPortal>
           </Drawer>
 
-          {/* Inline expanding search bar */}
+          {/* Updated search bar that opens from left to right with proper width */}
           <div 
             ref={searchContainerRef}
-            className={`absolute top-0 right-0 h-full transition-all duration-300 ease-in-out flex items-center ${
+            className={`absolute top-0 left-0 h-full transition-all duration-300 ease-in-out flex items-center ${
               isSearchOpen 
-                ? isMobile ? 'w-full px-2' : 'w-[calc(100%-64px)]'
+                ? isMobile ? 'w-full px-2' : 'w-[calc(100%-90px)] mx-auto left-0 right-0'
                 : 'w-0 opacity-0'
-            } bg-darkGray/90 backdrop-blur-md z-10`}
+            } bg-darkGray/90 backdrop-blur-md z-10 rounded-md border border-gray-700`}
+            style={{ padding: isSearchOpen ? '2px' : '0px' }}
           >
             {isSearchOpen && (
               <div className="w-full flex items-center">
@@ -253,7 +254,7 @@ const Navbar: React.FC = () => {
 
           {/* Search results dropdown */}
           {isSearchOpen && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 w-full bg-darkGray/95 backdrop-blur-lg shadow-lg max-h-[70vh] overflow-y-auto z-50 border-t border-gray-700">
+            <div className="absolute top-full left-0 w-full bg-darkGray/95 backdrop-blur-lg shadow-lg max-h-[70vh] overflow-y-auto z-50 border-t border-gray-700 rounded-b-md">
               <div className="p-4">
                 <h3 className="text-lg font-medium text-white mb-2">Search Results ({searchResults.length})</h3>
                 <div className="divide-y divide-gray-700">
@@ -311,7 +312,7 @@ const MenuLink: React.FC<MenuLinkProps> = ({ to, label, active }) => {
   return (
     <Link
       to={to}
-      className={`block text-2xl font-medium transition duration-300 ${
+      className={`block text-sm font-medium tracking-wide transition duration-300 ${
         active 
           ? 'text-[#0099FF]' 
           : 'text-white hover:text-[#0099FF]'
