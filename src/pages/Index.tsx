@@ -1,9 +1,3 @@
 
-import React from 'react';
-import Home from './Home';
-
-const Index: React.FC = () => {
-  return <Home />;
-};
-
-export default Index;
+// No longer in use. Only need single landing page in App.tsx.
+export default function Index() { return null }
