@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { caseStudiesData } from '@/data/caseStudies';
@@ -63,12 +62,12 @@ const CaseStudiesSection: React.FC = () => {
                           <div>
                             <h3 className="text-2xl font-bold mb-4">{caseStudy.title}</h3>
                             <p className="text-gray-600 mb-6">{caseStudy.fullDescription}</p>
-                            <Link 
-                              to="/case-studies" 
+                            <a 
+                              href="#caseStudies" 
                               className="text-primary font-medium inline-flex items-center hover:underline"
                             >
                               View More Case Studies <ArrowRight size={16} className="ml-1" />
-                            </Link>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -124,12 +123,12 @@ const CaseStudiesSection: React.FC = () => {
                     <div className="p-8 md:w-[70%]">
                       <h3 className="text-2xl font-bold mb-4">{study.title}</h3>
                       <p className="text-gray-600 mb-6">{study.fullDescription}</p>
-                      <Link 
-                        to="/case-studies" 
+                      <a 
+                        href="#caseStudies" 
                         className="text-primary font-medium inline-flex items-center hover:underline"
                       >
                         View More Case Studies <ArrowRight size={16} className="ml-1" />
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 ) : null;
@@ -139,9 +138,9 @@ const CaseStudiesSection: React.FC = () => {
         )}
         
         <div className="text-center mt-12">
-          <Link to="/case-studies" className="inline-flex items-center text-primary font-medium hover:underline">
+          <a href="#caseStudies" className="inline-flex items-center text-primary font-medium hover:underline">
             View All Case Studies <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </div>
     </section>

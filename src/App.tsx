@@ -1,5 +1,6 @@
 
 import React, { useRef } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ImpactMetricsSection from './components/home/ImpactMetricsSection';
@@ -53,14 +54,14 @@ const SectionWrapper: React.FC<{
 };
 
 const LandingPage: React.FC = () => {
-  // Section refs for smooth scrolling
+  // Section refs for smooth scrolling - properly typed as HTMLDivElement
   const sections = {
-    hero: useRef<HTMLElement>(null),
-    offerings: useRef<HTMLElement>(null),
-    caseStudies: useRef<HTMLElement>(null),
-    about: useRef<HTMLElement>(null),
-    careers: useRef<HTMLElement>(null),
-    contact: useRef<HTMLElement>(null),
+    hero: useRef<HTMLDivElement>(null),
+    offerings: useRef<HTMLDivElement>(null),
+    caseStudies: useRef<HTMLDivElement>(null),
+    about: useRef<HTMLDivElement>(null),
+    careers: useRef<HTMLDivElement>(null),
+    contact: useRef<HTMLDivElement>(null),
   };
 
   const scrollTo = (id: keyof typeof sections) => {
@@ -133,7 +134,11 @@ const LandingPage: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  return <LandingPage />;
+  return (
+    <BrowserRouter>
+      <LandingPage />
+    </BrowserRouter>
+  );
 };
 
 export default App;
