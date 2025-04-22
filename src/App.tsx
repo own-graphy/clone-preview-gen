@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -20,7 +20,7 @@ const SectionWrapper: React.FC<{
   children: React.ReactNode; 
   shortContent?: React.ReactNode;
 }> = ({ id, title, children, shortContent }) => {
-  const [showMore, setShowMore] = React.useState(false);
+  const [showMore, setShowMore] = useState(false);
   return (
     <section id={id} className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -92,7 +92,7 @@ const LandingPage: React.FC = () => {
       </div>
       <div ref={sections.caseStudies}>
         <SectionWrapper
-          id="case-studies"
+          id="caseStudies"
           title="Case Studies"
           shortContent={undefined}
         >
