@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ExternalLink } from 'lucide-react';
+import { dummyScrollTo } from '../utils/scrollHelper';
 
 const Portfolio: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
@@ -87,7 +87,7 @@ const Portfolio: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar scrollTo={dummyScrollTo} />
       <main className="flex-grow pt-20">
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">

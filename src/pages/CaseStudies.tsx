@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { dummyScrollTo } from '../utils/scrollHelper';
 
 const CaseStudies: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('All Industries');
@@ -14,7 +14,7 @@ const CaseStudies: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar scrollTo={dummyScrollTo} />
       <main className="flex-grow pt-20">
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">

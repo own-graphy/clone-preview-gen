@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { MapPin, Phone, Mail, Clock, Send, Check, ArrowRight, MessageCircle } from 'lucide-react';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
+import { dummyScrollTo } from '../utils/scrollHelper';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -50,7 +50,7 @@ const Contact: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar scrollTo={dummyScrollTo} />
       <main className="flex-grow pt-20">
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">

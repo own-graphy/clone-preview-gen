@@ -1,14 +1,15 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowRight, CheckCircle, Briefcase, BarChart, TrendingUp, Zap, Globe, Lightbulb } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { dummyScrollTo } from '../utils/scrollHelper';
 
 const Services: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar scrollTo={dummyScrollTo} />
+      
       <main className="flex-grow pt-20">
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
