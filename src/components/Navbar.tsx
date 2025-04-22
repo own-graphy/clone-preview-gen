@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../assets';
 import { NavLink } from './navbar/NavLinks';
-import SearchComponent from './navbar/SearchComponent';
 import MobileMenu from './navbar/MobileMenu';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -21,7 +20,6 @@ const Navbar: React.FC = () => {
         setScrolled(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -37,13 +35,11 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
           <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-
           <Link to="/" className="flex items-center space-x-2 ml-4 z-10">
             <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
             <span className="font-semibold text-xl text-gray-100">Advizo</span>
           </Link>
-          
-          <nav className={`hidden md:flex items-center space-x-8 flex-grow justify-center ml-8`}>
+          <nav className="hidden md:flex items-center space-x-8 flex-grow justify-center ml-8">
             <NavLink to="/" label="Home" currentPath={location.pathname} />
             <NavLink to="/services" label="Offerings" currentPath={location.pathname} />
             <NavLink to="/case-studies" label="Case Studies" currentPath={location.pathname} />
@@ -51,8 +47,6 @@ const Navbar: React.FC = () => {
             <NavLink to="/careers" label="Careers" currentPath={location.pathname} />
             <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
           </nav>
-          
-          <SearchComponent />
         </div>
       </div>
     </header>
@@ -60,3 +54,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
