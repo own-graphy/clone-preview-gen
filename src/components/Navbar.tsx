@@ -1,76 +1,69 @@
 
-import React, { useState, useEffect } from 'react';
-import { logo } from '../assets';
-import { isElementInViewport } from '../utils/scrollHelper';
-
-type NavbarProps = {
-  scrollTo: (section: string) => void;
-};
+import React, { useEffect, useState } from 'react';
 
 const NAV_LINKS = [
   { label: 'Home', anchor: 'hero' },
-  { label: 'Offerings', anchor: 'offerings' },
-  { label: 'Case Studies', anchor: 'caseStudies' },
   { label: 'About', anchor: 'about' },
-  { label: 'Careers', anchor: 'careers' },
+  { label: 'Services', anchor: 'services' },
+  { label: 'Case Studies', anchor: 'cases' },
+  { label: 'Testimonials', anchor: 'testimonials' },
   { label: 'Contact', anchor: 'contact' },
 ];
 
-const Navbar: React.FC<NavbarProps> = ({ scrollTo }) => {
-  const [activeSection, setActiveSection] = useState('hero');
+type NavbarProps = {
+  sectionRefs: Record<string, React.RefObject<HTMLElement>>;
+  scrollToSection: (id: string) => void;
+};
 
-  // Set up scroll event listener to update active section
+const Navbar: React.FC<NavbarProps> = ({ sectionRefs, scrollToSection }) => {
+  const [active, setActive] = useState('hero');
+
+  // Highlight section on scroll
   useEffect(() => {
-    const handleScroll = () => {
-      // Find which section is currently in view
-      for (const link of NAV_LINKS) {
-        const element = document.getElementById(link.anchor);
-        if (element && isElementInViewport(element)) {
-          setActiveSection(link.anchor);
-          break;
+    const onScroll = () => {
+      let currentSection = 'hero';
+      for (const { anchor } of NAV_LINKS) {
+        const ref = sectionRefs[anchor];
+        if (ref && ref.current) {
+          const offset = ref.current.offsetTop - 70;
+          if (window.scrollY + 80 >= offset) {
+            currentSection = anchor;
+          }
         }
       }
+      setActive(currentSection);
     };
-
-    window.addEventListener('scroll', handleScroll);
-    // Initial check on mount
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [sectionRefs]);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-darkGray/85 backdrop-blur-md shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
-          <a href="#" className="flex items-center space-x-2 ml-4 z-10" onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}>
-            <img src={logo} alt="Advizo Consulting" className="h-8 w-auto" />
-            <span className="font-semibold text-xl text-gray-100">Advizo</span>
-          </a>
-          <nav className="flex items-center space-x-8 flex-grow justify-end ml-8">
-            {NAV_LINKS.map(link => (
-              <a
-                key={link.anchor}
-                href={`#${link.anchor}`}
-                className={`transition duration-300 font-medium ${
-                  activeSection === link.anchor 
-                    ? 'text-primary' 
-                    : 'text-gray-200 hover:text-primary'
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo(link.anchor);
-                  setActiveSection(link.anchor);
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+    <header className="fixed top-0 left-0 w-full z-50 bg-darkGray/90 backdrop-blur shadow-md transition">
+      <nav className="container mx-auto flex items-center justify-between px-4 py-3">
+        <a
+          href="#"
+          className="font-bold text-xl text-white"
+          onClick={e => { e.preventDefault(); scrollToSection('hero'); }}
+        >
+          Advizo
+        </a>
+        <div className="flex space-x-6">
+          {NAV_LINKS.map(link => (
+            <button
+              key={link.anchor}
+              className={`transition px-3 py-1 rounded-md text-sm font-medium capitalize ${
+                active === link.anchor
+                  ? 'bg-primary text-white shadow'
+                  : 'text-gray-200 hover:text-primary'
+              }`}
+              onClick={() => scrollToSection(link.anchor)}
+            >
+              {link.label}
+            </button>
+          ))}
         </div>
-      </div>
+      </nav>
     </header>
   );
 };

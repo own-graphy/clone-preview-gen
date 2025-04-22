@@ -1,143 +1,77 @@
 
-import React, { useRef, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React, { useRef } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ImpactMetricsSection from './components/home/ImpactMetricsSection';
-import CaseStudiesSection from './components/home/CaseStudiesSection';
-import TestimonialsSection from './components/home/TestimonialsSection';
-import CtaSection from './components/home/CtaSection';
+import HeroSlider from './components/HeroSlider';
+import SectionWrapper from './components/SectionWrapper';
+import AboutSection from './components/AboutSection';
+import ServicesSection from './components/ServicesSection';
+import CaseStudiesSection from './components/CaseStudiesSection';
+import TestimonialsSection from './components/TestimonialsSection';
+import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
-// Import all the page sections
-import About from './pages/About';
-import Careers from './pages/Careers';
-import Contact from './pages/Contact';
-import Services from './pages/Services';
 
-const SectionWrapper: React.FC<{
-  id: string; 
-  title: string; 
-  children: React.ReactNode; 
-  shortContent?: React.ReactNode;
-}> = ({ id, title, children, shortContent }) => {
-  const [showMore, setShowMore] = useState(false);
-  return (
-    <section id={id} className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold mb-6">{title}</h2>
-        {showMore || !shortContent ? (
-          <>
-            {children}
-            {shortContent && (
-              <button 
-                className="mt-6 bg-primary text-white px-6 py-2 rounded-full"
-                onClick={() => setShowMore(false)}
-              >
-                Show Less
-              </button>
-            )}
-          </>
-        ) : (
-          <>
-            {shortContent}
-            <button 
-              className="mt-6 bg-primary text-white px-6 py-2 rounded-full"
-              onClick={() => setShowMore(true)}
-            >
-              Show More
-            </button>
-          </>
-        )}
-      </div>
-    </section>
-  );
-};
+// Section anchors for smooth scrolling
+const SECTIONS = [
+  { id: 'hero', title: 'Home' },
+  { id: 'about', title: 'About Us' },
+  { id: 'services', title: 'Services' },
+  { id: 'cases', title: 'Case Studies' },
+  { id: 'testimonials', title: 'Testimonials' },
+  { id: 'contact', title: 'Contact' },
+];
 
-const LandingPage: React.FC = () => {
-  // Section refs for smooth scrolling - properly typed as HTMLDivElement
-  const sections = {
+const App: React.FC = () => {
+  const sectionRefs = {
     hero: useRef<HTMLDivElement>(null),
-    offerings: useRef<HTMLDivElement>(null),
-    caseStudies: useRef<HTMLDivElement>(null),
     about: useRef<HTMLDivElement>(null),
-    careers: useRef<HTMLDivElement>(null),
+    services: useRef<HTMLDivElement>(null),
+    cases: useRef<HTMLDivElement>(null),
+    testimonials: useRef<HTMLDivElement>(null),
     contact: useRef<HTMLDivElement>(null),
   };
 
-  const scrollTo = (id: keyof typeof sections) => {
-    const el = sections[id].current;
-    if (el) {
-      window.scrollTo({
-        top: el.offsetTop - 80,
-        behavior: 'smooth'
-      });
+  const scrollToSection = (id: keyof typeof sectionRefs) => {
+    const ref = sectionRefs[id];
+    if (ref.current) {
+      window.scrollTo({ top: ref.current.offsetTop - 65, behavior: 'smooth' });
     }
   };
 
   return (
-    <>
-      <Navbar scrollTo={scrollTo} />
-      <div ref={sections.hero}>
-        <Hero />
-      </div>
-      <div ref={sections.offerings}>
-        {/* Offerings section, using existing code */}
-        <SectionWrapper
-          id="offerings"
-          title="Our Offerings"
-          shortContent={<ImpactMetricsSection />}
-        >
-          <Services />
-        </SectionWrapper>
-      </div>
-      <div ref={sections.caseStudies}>
-        <SectionWrapper
-          id="caseStudies"
-          title="Case Studies"
-          shortContent={undefined}
-        >
-          <CaseStudiesSection />
-        </SectionWrapper>
-      </div>
-      <div ref={sections.about}>
-        <SectionWrapper
-          id="about"
-          title="About Us"
-          shortContent={undefined}
-        >
-          <About />
-        </SectionWrapper>
-      </div>
-      <div ref={sections.careers}>
-        <SectionWrapper
-          id="careers"
-          title="Careers"
-          shortContent={undefined}
-        >
-          <Careers />
-        </SectionWrapper>
-      </div>
-      <div ref={sections.contact}>
-        <SectionWrapper
-          id="contact"
-          title="Contact"
-          shortContent={undefined}
-        >
-          <Contact />
-        </SectionWrapper>
-      </div>
-      <TestimonialsSection />
-      <CtaSection />
+    <div className="bg-darkGray">
+      <Navbar sectionRefs={sectionRefs} scrollToSection={scrollToSection} />
+      <main>
+        <section ref={sectionRefs.hero} id="hero" className="relative">
+          <HeroSlider onFreeConsult={() => scrollToSection('contact')} />
+        </section>
+        <div ref={sectionRefs.about} id="about">
+          <SectionWrapper id="about" title="About Us" shortContent={<AboutSection short />}>
+            <AboutSection />
+          </SectionWrapper>
+        </div>
+        <div ref={sectionRefs.services} id="services">
+          <SectionWrapper id="services" title="Our Services" shortContent={<ServicesSection short />}>
+            <ServicesSection />
+          </SectionWrapper>
+        </div>
+        <div ref={sectionRefs.cases} id="cases">
+          <SectionWrapper id="cases" title="Case Studies" shortContent={<CaseStudiesSection short />}>
+            <CaseStudiesSection />
+          </SectionWrapper>
+        </div>
+        <div ref={sectionRefs.testimonials} id="testimonials">
+          <SectionWrapper id="testimonials" title="Testimonials">
+            <TestimonialsSection />
+          </SectionWrapper>
+        </div>
+        <div ref={sectionRefs.contact} id="contact">
+          <SectionWrapper id="contact" title="Contact">
+            <ContactSection />
+          </SectionWrapper>
+        </div>
+      </main>
       <Footer />
-    </>
-  );
-};
-
-const App: React.FC = () => {
-  return (
-    <BrowserRouter>
-      <LandingPage />
-    </BrowserRouter>
+    </div>
   );
 };
 
