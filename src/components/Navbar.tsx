@@ -10,12 +10,12 @@ const NAV_LINKS = [
   { label: 'Contact', anchor: 'contact' },
 ];
 
-type NavbarProps = {
-  sectionRefs: Record<string, React.RefObject<HTMLElement>>;
+export type NavbarProps = {
+  sectionRefs?: Record<string, React.RefObject<HTMLElement>>;
   scrollToSection: (id: string) => void;
 };
 
-const Navbar: React.FC<NavbarProps> = ({ sectionRefs, scrollToSection }) => {
+const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection }) => {
   const [active, setActive] = useState('hero');
 
   // Highlight section on scroll

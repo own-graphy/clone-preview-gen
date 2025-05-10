@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export interface ArticleCardProps {
   id: string;
@@ -24,13 +24,14 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   link
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
   
   return (
     <div 
       className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => window.location.href = link}
+      onClick={() => navigate(link)}
     >
       {/* Image */}
       <div className="relative h-64 overflow-hidden">
@@ -69,13 +70,15 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
         {/* Learn More button - Only visible when hovered */}
         <div className={`mt-auto transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <Link 
-            to={link} 
+          <button 
             className="inline-flex items-center text-primary font-medium hover:underline"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(link);
+            }}
           >
             Learn More <ArrowRight size={16} className="ml-1" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>
