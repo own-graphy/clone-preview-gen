@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
@@ -248,29 +247,27 @@ const Expertise: React.FC = () => {
         </p>
         
         {/* Card Carousel - limiting height to 50vh */}
-        <div className="relative max-h-[50vh] overflow-hidden">
+        <div className="relative" style={{ height: '50vh', maxHeight: '50vh' }}>
           <div 
             ref={carouselRef}
-            className="flex justify-center items-center py-6 overflow-x-auto hide-scrollbar"
-            style={{ height: '50vh', minHeight: '400px' }}
+            className="flex justify-center items-center h-full overflow-hidden hide-scrollbar"
           >
             <div className="flex items-center justify-center space-x-4 md:space-x-6 px-4">
               {visibleCards.map((card, index) => (
                 <div 
                   key={`${card.id}-${index}`}
                   id={`expertise-card-${card.id}`}
-                  className={`transition-all duration-500 transform ${
-                    index === centerIndex ? 'z-10' : 'z-0'
-                  }`}
+                  className="transition-all duration-500 transform"
                   style={{
-                    width: index === centerIndex ? '300px' : '240px',
+                    width: index === centerIndex ? '340px' : index === centerIndex - 1 || index === centerIndex + 1 ? '280px' : '240px',
                     transformOrigin: 'center center',
                     transform: `translateX(${(index - centerIndex) * 20}px) scale(${
                       index === centerIndex ? 1 : 
                       index === centerIndex - 1 || index === centerIndex + 1 ? 0.85 : 0.75
                     })`,
                     opacity: index === centerIndex ? 1 : 
-                           index === centerIndex - 1 || index === centerIndex + 1 ? 0.7 : 0.5
+                           index === centerIndex - 1 || index === centerIndex + 1 ? 0.7 : 0.5,
+                    zIndex: 10 - Math.abs(index - centerIndex)
                   }}
                 >
                   <ExpertiseCard 
@@ -285,12 +282,12 @@ const Expertise: React.FC = () => {
           </div>
           
           {/* Controls */}
-          <div className="flex justify-center mt-6 space-x-4">
+          <div className="absolute bottom-0 left-0 right-0 flex justify-center mt-6 mb-4 space-x-4">
             <Button 
               onClick={handlePrevClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10"
+              className="rounded-full h-10 w-10 bg-white"
             >
               <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">Previous</span>
@@ -299,7 +296,7 @@ const Expertise: React.FC = () => {
               onClick={handleNextClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10"
+              className="rounded-full h-10 w-10 bg-white"
             >
               <ArrowRight className="h-5 w-5" />
               <span className="sr-only">Next</span>
