@@ -22,8 +22,8 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
     category: 'Corporate Finance and Strategy',
     type: 'Article',
     date: 'May 2, 2025',
-    title: 'The 2025 Value Creators Rankings: After a Decade of Growth, What's Next?',
-    description: 'Which industries and regions came out on top last year—and what will drive success in today\'s uncertain economic landscape?',
+    title: "The 2025 Value Creators Rankings: After a Decade of Growth, What's Next?",
+    description: "Which industries and regions came out on top last year—and what will drive success in today's uncertain economic landscape?",
     image: 'https://placehold.co/600x800/2563eb/FFFFFF?text=Finance',
     link: '/insights/finance'
   },
@@ -63,7 +63,7 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
     type: 'Report',
     date: 'April 30, 2025',
     title: 'The Vitality Code: How Growth Leaders Master Strategy, Technology, People, and Culture',
-    description: 'Corporate vitality is a proprietary measure that BCG developed to assess a company\'s potential for long-term growth. Find out how leading companies outperform their peers.',
+    description: "Corporate vitality is a proprietary measure that BCG developed to assess a company's potential for long-term growth. Find out how leading companies outperform their peers.",
     image: 'https://placehold.co/600x800/2563eb/FFFFFF?text=Vitality',
     link: '/insights/vitality'
   },
