@@ -2,13 +2,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext
-} from './ui/carousel';
 
 // Card data structure
 export interface ExpertiseCardProps {
@@ -94,7 +87,7 @@ const ExpertiseCard: React.FC<{
 }> = ({ card, size, isSelected, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   
-  // Adjust scale based on card size
+  // Adjust scale and opacity based on card size
   const getCardClass = () => {
     const baseClass = "expertise-card cursor-pointer transition-all duration-500";
     
@@ -123,7 +116,7 @@ const ExpertiseCard: React.FC<{
     >
       <div className="relative h-full overflow-hidden rounded-lg shadow-md bg-white border border-gray-200">
         {/* Image */}
-        <div className="relative h-80 overflow-hidden">
+        <div className="relative h-48 overflow-hidden">
           <img
             src={card.image}
             alt={card.title}
@@ -132,29 +125,29 @@ const ExpertiseCard: React.FC<{
         </div>
         
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4">
           {/* Category */}
           <div className="mb-2">
             <div className="text-primary font-medium text-sm">{card.category}</div>
           </div>
           
           {/* Type and Date */}
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-2 flex items-center justify-between">
             <div className="text-xs font-medium text-gray-500 uppercase">{card.type}</div>
             <div className="text-xs text-gray-400">{card.date}</div>
           </div>
           
           {/* Title */}
-          <h3 className="text-xl font-bold mb-3 line-clamp-3 text-gray-900">{card.title}</h3>
+          <h3 className="text-base md:text-lg font-bold mb-2 line-clamp-3 text-gray-900">{card.title}</h3>
           
           {/* Description - expanded when selected */}
           <div className={`transition-all duration-300 ${
-            isSelected ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            isSelected ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
           }`}>
-            <p className="text-gray-600 mb-4">{card.description}</p>
-            <div className="mt-4">
-              <a href={card.link} className="inline-flex items-center text-primary font-medium hover:underline">
-                Learn More <ArrowRight size={16} className="ml-1" />
+            <p className="text-sm text-gray-600 mb-3 line-clamp-3">{card.description}</p>
+            <div className="mt-2">
+              <a href={card.link} className="inline-flex items-center text-primary text-sm font-medium hover:underline">
+                Learn More <ArrowRight size={14} className="ml-1" />
               </a>
             </div>
           </div>
@@ -203,12 +196,20 @@ const Expertise: React.FC = () => {
   const handleCardClick = (id: string) => {
     setSelectedCard(id);
     
-    // Scroll the selected card to center if on mobile
-    if (window.innerWidth < 768 && carouselRef.current) {
+    // Center the clicked card with smooth animation
+    if (carouselRef.current) {
       const element = document.getElementById(`expertise-card-${id}`);
       if (element) {
-        const scrollPosition = element.offsetLeft - (carouselRef.current.offsetWidth / 2) + (element.offsetWidth / 2);
-        carouselRef.current.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        // Calculate the position to center the card
+        const carouselCenter = carouselRef.current.offsetWidth / 2;
+        const cardCenter = element.offsetLeft + (element.offsetWidth / 2);
+        const scrollPosition = cardCenter - carouselCenter;
+        
+        // Smooth scroll to center
+        carouselRef.current.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
       }
     }
   };
@@ -232,38 +233,45 @@ const Expertise: React.FC = () => {
     if (distanceFromCenter === 0) {
       return 'large';
     } else if (distanceFromCenter === 1) {
-      return 'small';
-    } else {
       return 'medium';
+    } else {
+      return 'small';
     }
   };
   
   return (
-    <div className="py-16 bg-gray-50">
+    <div className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center">Our Expertise</h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
           Explore our latest insights and research across different industries and capabilities
         </p>
         
-        <div className="relative">
-          {/* Card Carousel */}
+        {/* Card Carousel - limiting height to 50vh */}
+        <div className="relative max-h-[50vh] overflow-hidden">
           <div 
             ref={carouselRef}
-            className="flex justify-center items-center py-8 hide-scrollbar"
+            className="flex justify-center items-center py-6 overflow-x-auto hide-scrollbar"
+            style={{ height: '50vh', minHeight: '400px' }}
           >
-            <div className="flex items-center justify-center space-x-4 md:space-x-8">
+            <div className="flex items-center justify-center space-x-4 md:space-x-6 px-4">
               {visibleCards.map((card, index) => (
                 <div 
                   key={`${card.id}-${index}`}
                   id={`expertise-card-${card.id}`}
                   className={`transition-all duration-500 transform ${
-                    index === 0 ? 'order-1' : 
-                    index === 1 ? 'order-2' : 
-                    index === 2 ? 'order-3' : 
-                    index === 3 ? 'order-4' : 'order-5'
+                    index === centerIndex ? 'z-10' : 'z-0'
                   }`}
-                  style={{ width: index === centerIndex ? '320px' : index === centerIndex - 1 || index === centerIndex + 1 ? '280px' : '260px' }}
+                  style={{
+                    width: index === centerIndex ? '300px' : '240px',
+                    transformOrigin: 'center center',
+                    transform: `translateX(${(index - centerIndex) * 20}px) scale(${
+                      index === centerIndex ? 1 : 
+                      index === centerIndex - 1 || index === centerIndex + 1 ? 0.85 : 0.75
+                    })`,
+                    opacity: index === centerIndex ? 1 : 
+                           index === centerIndex - 1 || index === centerIndex + 1 ? 0.7 : 0.5
+                  }}
                 >
                   <ExpertiseCard 
                     card={card}
@@ -277,7 +285,7 @@ const Expertise: React.FC = () => {
           </div>
           
           {/* Controls */}
-          <div className="flex justify-center mt-8 space-x-4">
+          <div className="flex justify-center mt-6 space-x-4">
             <Button 
               onClick={handlePrevClick} 
               variant="outline" 
