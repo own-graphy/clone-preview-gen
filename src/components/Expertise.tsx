@@ -1,7 +1,14 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
+} from './ui/carousel';
 
 // Card data structure
 export interface ExpertiseCardProps {
@@ -81,16 +88,35 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
 
 const ExpertiseCard: React.FC<{
   card: ExpertiseCardProps;
+  size: 'small' | 'medium' | 'large';
   isSelected: boolean;
   onClick: () => void;
-}> = ({ card, isSelected, onClick }) => {
+}> = ({ card, size, isSelected, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+  
+  // Adjust scale based on card size
+  const getCardClass = () => {
+    const baseClass = "expertise-card cursor-pointer transition-all duration-500";
+    
+    if (isSelected) {
+      return `${baseClass} scale-105 shadow-xl z-20`;
+    }
+    
+    switch (size) {
+      case 'small':
+        return `${baseClass} scale-75 opacity-60`;
+      case 'medium':
+        return `${baseClass} scale-85 opacity-70`;
+      case 'large':
+        return `${baseClass} scale-100 opacity-85`;
+      default:
+        return baseClass;
+    }
+  };
   
   return (
     <div 
-      className={`expertise-card cursor-pointer transition-all duration-500 ${
-        isSelected ? 'scale-105 shadow-xl z-20' : 'scale-95 opacity-70'
-      }`}
+      className={getCardClass()}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -141,6 +167,38 @@ const ExpertiseCard: React.FC<{
 const Expertise: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<string>('3'); // Start with middle card selected
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [visibleCards, setVisibleCards] = useState<ExpertiseCardProps[]>([]);
+  const [centerIndex, setCenterIndex] = useState(2); // Center card index (0-based)
+  
+  // Calculate visible cards and their sizes
+  useEffect(() => {
+    // Get the selected card index
+    const selectedIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    
+    // Calculate the center index (should be 2 for a 5-card display)
+    const newCenterIndex = 2;
+    setCenterIndex(newCenterIndex);
+    
+    // Calculate the start index to ensure the selected card is in the center
+    let startIndex = selectedIndex - newCenterIndex;
+    
+    // Handle edge cases
+    if (startIndex < 0) {
+      startIndex = 0;
+    } else if (startIndex + 5 > EXPERTISE_CARDS.length) {
+      startIndex = Math.max(0, EXPERTISE_CARDS.length - 5);
+    }
+    
+    // Get the 5 visible cards
+    const newVisibleCards = EXPERTISE_CARDS.slice(startIndex, startIndex + 5);
+    
+    // If we don't have 5 cards, pad with duplicates from the start
+    while (newVisibleCards.length < 5) {
+      newVisibleCards.push(EXPERTISE_CARDS[newVisibleCards.length % EXPERTISE_CARDS.length]);
+    }
+    
+    setVisibleCards(newVisibleCards);
+  }, [selectedCard]);
   
   const handleCardClick = (id: string) => {
     setSelectedCard(id);
@@ -167,6 +225,19 @@ const Expertise: React.FC = () => {
     setSelectedCard(EXPERTISE_CARDS[nextIndex].id);
   };
   
+  // Determine card size based on position relative to center
+  const getCardSize = (index: number): 'small' | 'medium' | 'large' => {
+    const distanceFromCenter = Math.abs(index - centerIndex);
+    
+    if (distanceFromCenter === 0) {
+      return 'large';
+    } else if (distanceFromCenter === 1) {
+      return 'small';
+    } else {
+      return 'medium';
+    }
+  };
+  
   return (
     <div className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -176,21 +247,27 @@ const Expertise: React.FC = () => {
         </p>
         
         <div className="relative">
-          {/* Carousel */}
+          {/* Card Carousel */}
           <div 
             ref={carouselRef}
-            className="flex overflow-x-auto pb-8 pt-4 hide-scrollbar snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="flex justify-center items-center py-8 hide-scrollbar"
           >
-            <div className="flex space-x-6 px-8 md:px-12 w-max">
-              {EXPERTISE_CARDS.map(card => (
+            <div className="flex items-center justify-center space-x-4 md:space-x-8">
+              {visibleCards.map((card, index) => (
                 <div 
-                  key={card.id}
+                  key={`${card.id}-${index}`}
                   id={`expertise-card-${card.id}`}
-                  className="w-72 md:w-80 flex-shrink-0 snap-center transition-transform duration-500 transform"
+                  className={`transition-all duration-500 transform ${
+                    index === 0 ? 'order-1' : 
+                    index === 1 ? 'order-2' : 
+                    index === 2 ? 'order-3' : 
+                    index === 3 ? 'order-4' : 'order-5'
+                  }`}
+                  style={{ width: index === centerIndex ? '320px' : index === centerIndex - 1 || index === centerIndex + 1 ? '280px' : '260px' }}
                 >
                   <ExpertiseCard 
                     card={card}
+                    size={getCardSize(index)}
                     isSelected={selectedCard === card.id}
                     onClick={() => handleCardClick(card.id)}
                   />
