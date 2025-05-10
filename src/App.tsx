@@ -9,6 +9,7 @@ import CaseStudiesSection from './components/CaseStudiesSection';
 import TestimonialsSection from './components/TestimonialsSection';
 import ContactSection from './components/ContactSection';
 import InsightsSection from './components/InsightsSection';
+import Expertise from './components/Expertise';
 import Footer from './components/Footer';
 
 // Section anchors for smooth scrolling
@@ -16,6 +17,7 @@ const SECTIONS = [
   { id: 'hero', title: 'Home' },
   { id: 'about', title: 'About Us' },
   { id: 'services', title: 'Services' },
+  { id: 'expertise', title: 'Expertise' },
   { id: 'insights', title: 'Insights' },
   { id: 'cases', title: 'Case Studies' },
   { id: 'testimonials', title: 'Testimonials' },
@@ -27,6 +29,7 @@ const App: React.FC = () => {
     hero: useRef<HTMLDivElement>(null),
     about: useRef<HTMLDivElement>(null),
     services: useRef<HTMLDivElement>(null),
+    expertise: useRef<HTMLDivElement>(null),
     insights: useRef<HTMLDivElement>(null),
     cases: useRef<HTMLDivElement>(null),
     testimonials: useRef<HTMLDivElement>(null),
@@ -56,6 +59,9 @@ const App: React.FC = () => {
           <SectionWrapper id="services" title="Our Services" shortContent={<ServicesSection short />}>
             <ServicesSection />
           </SectionWrapper>
+        </div>
+        <div ref={sectionRefs.expertise} id="expertise">
+          <Expertise />
         </div>
         <div ref={sectionRefs.insights} id="insights" className="bg-gray-50 py-16">
           <div className="container mx-auto px-4">

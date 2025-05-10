@@ -5,6 +5,8 @@ const NAV_LINKS = [
   { label: 'Home', anchor: 'hero' },
   { label: 'About', anchor: 'about' },
   { label: 'Services', anchor: 'services' },
+  { label: 'Expertise', anchor: 'expertise' },
+  { label: 'Insights', anchor: 'insights' },
   { label: 'Case Studies', anchor: 'cases' },
   { label: 'Testimonials', anchor: 'testimonials' },
   { label: 'Contact', anchor: 'contact' },
@@ -48,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection }) =>
         >
           Advizo
         </a>
-        <div className="flex space-x-6">
+        <div className="flex space-x-6 overflow-x-auto hide-scrollbar">
           {NAV_LINKS.map(link => (
             <button
               key={link.anchor}
