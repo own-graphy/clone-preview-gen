@@ -14,11 +14,21 @@ const NAV_LINKS = [
 
 export type NavbarProps = {
   sectionRefs?: Record<string, React.RefObject<HTMLElement>>;
-  scrollToSection: (id: string) => void;
+  scrollToSection?: (id: string) => void;
+  scrollTo?: (id: string) => void; // Add this alternative prop name to match usage in pages
 };
 
-const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection }) => {
+const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection, scrollTo }) => {
   const [active, setActive] = useState('hero');
+  
+  // Use scrollTo as a fallback if scrollToSection is not provided
+  const handleScroll = (id: string) => {
+    if (scrollToSection) {
+      scrollToSection(id);
+    } else if (scrollTo) {
+      scrollTo(id);
+    }
+  };
 
   // Highlight section on scroll
   useEffect(() => {
@@ -46,7 +56,7 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection }) =>
         <a
           href="#"
           className="font-bold text-xl text-white"
-          onClick={e => { e.preventDefault(); scrollToSection('hero'); }}
+          onClick={e => { e.preventDefault(); handleScroll('hero'); }}
         >
           Advizo
         </a>
@@ -59,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs = {}, scrollToSection }) =>
                   ? 'bg-primary text-white shadow'
                   : 'text-gray-200 hover:text-primary'
               }`}
-              onClick={() => scrollToSection(link.anchor)}
+              onClick={() => handleScroll(link.anchor)}
             >
               {link.label}
             </button>
