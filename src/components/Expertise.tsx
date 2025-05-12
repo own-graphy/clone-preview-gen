@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
@@ -144,8 +143,9 @@ const Expertise: React.FC = () => {
     if (relativePos > totalCards / 2) relativePos -= totalCards;
     
     const baseZIndex = 10;
-    const cardWidth = 300; // Base card width
-    const gapWidth = 20;  // Gap between cards
+    // Adjusted card width to better match the image
+    const cardWidth = 280; 
+    const gapWidth = 30;  // Increased gap between cards for better spacing
     
     // Calculate transform values based on position
     let translateX = relativePos * (cardWidth + gapWidth);
@@ -177,9 +177,9 @@ const Expertise: React.FC = () => {
           Explore our latest insights and research across different industries and capabilities
         </p>
         
-        {/* Carousel Container */}
+        {/* Carousel Container - adjusted height to match card size */}
         <div 
-          className="relative h-[500px] max-w-[1200px] mx-auto overflow-hidden"
+          className="relative h-[420px] max-w-[1200px] mx-auto overflow-hidden"
           ref={carouselRef}
           onMouseDown={(e) => handleDragStart(e.clientX)}
           onMouseMove={(e) => handleDragMove(e.clientX)}

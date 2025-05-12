@@ -33,8 +33,8 @@ const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick }) => {
       onClick={onClick}
     >
       <div className="flex flex-col h-full">
-        {/* Image */}
-        <div className="relative h-[260px] overflow-hidden">
+        {/* Image - adjusted height to better match the provided image */}
+        <div className="relative h-[180px] overflow-hidden">
           <img
             src={card.image}
             alt={card.title}
@@ -56,7 +56,7 @@ const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick }) => {
           </div>
           
           {/* Title */}
-          <h3 className="text-lg font-bold mb-3 line-clamp-3 text-gray-900">{card.title}</h3>
+          <h3 className="text-lg font-bold mb-3 line-clamp-2 text-gray-900">{card.title}</h3>
           
           {/* Description - shown only when selected */}
           <div className={contentVisibilityClass}>
