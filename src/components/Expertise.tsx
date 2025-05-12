@@ -2,18 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
-
-// Card data structure
-export interface ExpertiseCardProps {
-  id: string;
-  category: string;
-  type: string;
-  date: string;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-}
+import ExpertiseCard, { ExpertiseCardProps } from './ExpertiseCard';
 
 // Sample data for the expertise cards
 const EXPERTISE_CARDS: ExpertiseCardProps[] = [
@@ -79,155 +68,53 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
   }
 ];
 
-const ExpertiseCard: React.FC<{
-  card: ExpertiseCardProps;
-  size: 'small' | 'medium' | 'large';
-  isSelected: boolean;
-  onClick: () => void;
-}> = ({ card, size, isSelected, onClick }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
-  // Adjust scale and opacity based on card size
-  const getCardClass = () => {
-    const baseClass = "expertise-card cursor-pointer transition-all duration-500";
-    
-    if (isSelected) {
-      return `${baseClass} scale-105 shadow-xl z-20`;
-    }
-    
-    switch (size) {
-      case 'small':
-        return `${baseClass} scale-75 opacity-60`;
-      case 'medium':
-        return `${baseClass} scale-85 opacity-70`;
-      case 'large':
-        return `${baseClass} scale-100 opacity-85`;
-      default:
-        return baseClass;
-    }
-  };
-  
-  return (
-    <div 
-      className={getCardClass()}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="relative h-full overflow-hidden rounded-lg shadow-md bg-white border border-gray-200">
-        {/* Image */}
-        <div className="relative h-48 overflow-hidden">
-          <img
-            src={card.image}
-            alt={card.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        
-        {/* Content */}
-        <div className="p-4">
-          {/* Category */}
-          <div className="mb-2">
-            <div className="text-primary font-medium text-sm">{card.category}</div>
-          </div>
-          
-          {/* Type and Date */}
-          <div className="mb-2 flex items-center justify-between">
-            <div className="text-xs font-medium text-gray-500 uppercase">{card.type}</div>
-            <div className="text-xs text-gray-400">{card.date}</div>
-          </div>
-          
-          {/* Title */}
-          <h3 className="text-base md:text-lg font-bold mb-2 line-clamp-3 text-gray-900">{card.title}</h3>
-          
-          {/* Description - expanded when selected */}
-          <div className={`transition-all duration-300 ${
-            isSelected ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-          }`}>
-            <p className="text-sm text-gray-600 mb-3 line-clamp-3">{card.description}</p>
-            <div className="mt-2">
-              <a href={card.link} className="inline-flex items-center text-primary text-sm font-medium hover:underline">
-                Learn More <ArrowRight size={14} className="ml-1" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const Expertise: React.FC = () => {
-  const [selectedCard, setSelectedCard] = useState<string>('3'); // Start with middle card selected
+  const [selectedCard, setSelectedCard] = useState<string>('3'); // Start with middle card
+  const [autoPlay, setAutoPlay] = useState<boolean>(true);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [visibleCards, setVisibleCards] = useState<ExpertiseCardProps[]>([]);
-  const [centerIndex, setCenterIndex] = useState(2); // Center card index (0-based)
-  const [autoPlay, setAutoPlay] = useState(true);
   
-  // Calculate visible cards and their sizes
+  // Visible cards in display (5 cards including center and edges)
+  const [visibleCards, setVisibleCards] = useState<ExpertiseCardProps[]>([]);
+  
+  // Calculate visible cards based on selected card
   useEffect(() => {
-    // Get the selected card index
     const selectedIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    let cards: ExpertiseCardProps[] = [];
     
-    // Calculate the center index (should be 2 for a 5-card display)
-    const newCenterIndex = 2;
-    setCenterIndex(newCenterIndex);
-    
-    // Calculate the start index to ensure the selected card is in the center
-    let startIndex = selectedIndex - newCenterIndex;
-    
-    // Handle edge cases
-    if (startIndex < 0) {
-      startIndex = 0;
-    } else if (startIndex + 5 > EXPERTISE_CARDS.length) {
-      startIndex = Math.max(0, EXPERTISE_CARDS.length - 5);
+    // Get 2 cards before
+    for (let i = selectedIndex - 2; i < selectedIndex; i++) {
+      const index = i < 0 ? EXPERTISE_CARDS.length + i : i;
+      cards.push(EXPERTISE_CARDS[index]);
     }
     
-    // Get the 5 visible cards
-    const newVisibleCards = EXPERTISE_CARDS.slice(startIndex, startIndex + 5);
+    // Add selected card
+    cards.push(EXPERTISE_CARDS[selectedIndex]);
     
-    // If we don't have 5 cards, pad with duplicates from the start
-    while (newVisibleCards.length < 5) {
-      newVisibleCards.push(EXPERTISE_CARDS[newVisibleCards.length % EXPERTISE_CARDS.length]);
+    // Get 2 cards after
+    for (let i = selectedIndex + 1; i <= selectedIndex + 2; i++) {
+      const index = i >= EXPERTISE_CARDS.length ? i - EXPERTISE_CARDS.length : i;
+      cards.push(EXPERTISE_CARDS[index]);
     }
     
-    setVisibleCards(newVisibleCards);
+    setVisibleCards(cards);
   }, [selectedCard]);
-
+  
   // Auto-play functionality
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    if (!autoPlay) return;
     
-    if (autoPlay) {
-      interval = setInterval(() => {
-        handleNextClick();
-      }, 5000); // Change slide every 5 seconds
-    }
+    const interval = setInterval(() => {
+      handleNextClick();
+    }, 5000);
     
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [autoPlay, selectedCard]);
   
-  const handleCardClick = (id: string) => {
-    setSelectedCard(id);
-    
-    // Center the clicked card with smooth animation
-    if (carouselRef.current) {
-      const element = document.getElementById(`expertise-card-${id}`);
-      if (element) {
-        // Calculate the position to center the card
-        const carouselCenter = carouselRef.current.offsetWidth / 2;
-        const cardCenter = element.offsetLeft + (element.offsetWidth / 2);
-        const scrollPosition = cardCenter - carouselCenter;
-        
-        // Smooth scroll to center
-        carouselRef.current.scrollTo({
-          left: scrollPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
+  // Navigation
+  const handleNextClick = () => {
+    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    const nextIndex = (currentIndex + 1) % EXPERTISE_CARDS.length;
+    setSelectedCard(EXPERTISE_CARDS[nextIndex].id);
   };
   
   const handlePrevClick = () => {
@@ -236,22 +123,19 @@ const Expertise: React.FC = () => {
     setSelectedCard(EXPERTISE_CARDS[prevIndex].id);
   };
   
-  const handleNextClick = () => {
-    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
-    const nextIndex = currentIndex < EXPERTISE_CARDS.length - 1 ? currentIndex + 1 : 0;
-    setSelectedCard(EXPERTISE_CARDS[nextIndex].id);
-  };
-  
-  // Determine card size based on position relative to center
-  const getCardSize = (index: number): 'small' | 'medium' | 'large' => {
-    const distanceFromCenter = Math.abs(index - centerIndex);
-    
-    if (distanceFromCenter === 0) {
-      return 'large';
-    } else if (distanceFromCenter === 1) {
-      return 'medium';
-    } else {
-      return 'small';
+  // Calculate card's visual state based on its position
+  const getCardVisualState = (index: number): 'small' | 'medium' | 'large' => {
+    switch (index) {
+      case 0: // Far left
+      case 4: // Far right
+        return 'small';
+      case 1: // Left
+      case 3: // Right
+        return 'medium';
+      case 2: // Center
+        return 'large';
+      default:
+        return 'small';
     }
   };
   
@@ -263,48 +147,57 @@ const Expertise: React.FC = () => {
           Explore our latest insights and research across different industries and capabilities
         </p>
         
-        {/* Card Carousel - limiting height to 50vh */}
+        {/* Card Carousel Container - 50vh height */}
         <div className="relative" style={{ height: '50vh', maxHeight: '50vh' }}>
-          <div 
-            ref={carouselRef}
-            className="flex justify-center items-center h-full overflow-hidden hide-scrollbar"
-          >
-            <div className="flex items-center justify-center space-x-4 md:space-x-6 px-4">
-              {visibleCards.map((card, index) => (
-                <div 
-                  key={`${card.id}-${index}`}
-                  id={`expertise-card-${card.id}`}
-                  className="transition-all duration-500 transform"
-                  style={{
-                    width: index === centerIndex ? '340px' : index === centerIndex - 1 || index === centerIndex + 1 ? '280px' : '240px',
-                    transformOrigin: 'center center',
-                    transform: `translateX(${(index - centerIndex) * 20}px) scale(${
-                      index === centerIndex ? 1 : 
-                      index === centerIndex - 1 || index === centerIndex + 1 ? 0.85 : 0.75
-                    })`,
-                    opacity: index === centerIndex ? 1 : 
-                           index === centerIndex - 1 || index === centerIndex + 1 ? 0.7 : 0.5,
-                    zIndex: 10 - Math.abs(index - centerIndex)
-                  }}
-                >
-                  <ExpertiseCard 
-                    card={card}
-                    size={getCardSize(index)}
-                    isSelected={selectedCard === card.id}
-                    onClick={() => handleCardClick(card.id)}
-                  />
-                </div>
-              ))}
+          <div className="flex items-center justify-center h-full overflow-hidden">
+            {/* Cards Container */}
+            <div className="relative flex items-center justify-center">
+              {visibleCards.map((card, index) => {
+                const isCenter = index === 2;
+                const visualState = getCardVisualState(index);
+                
+                // Calculate position and style based on index
+                const getCardStyle = () => {
+                  // Base width depends on position
+                  const baseWidth = isCenter ? 340 : index === 1 || index === 3 ? 280 : 240;
+                  
+                  // Calculate horizontal offset 
+                  const offsetX = (index - 2) * 120; // 120px offset between cards
+                  
+                  return {
+                    width: `${baseWidth}px`,
+                    transform: `translateX(${offsetX}px)`,
+                    zIndex: 10 - Math.abs(index - 2),
+                    transition: 'all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1.0)'
+                  };
+                };
+                
+                return (
+                  <div
+                    key={`${card.id}-${index}`}
+                    className="absolute transition-all duration-500 ease-in-out"
+                    style={getCardStyle()}
+                  >
+                    <ExpertiseCard
+                      card={card}
+                      isSelected={selectedCard === card.id}
+                      onClick={() => setSelectedCard(card.id)}
+                      visualState={visualState}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
           
           {/* Controls */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center mt-6 mb-4 space-x-4">
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
+            {/* Play/Pause Button */}
             <Button 
               onClick={() => setAutoPlay(!autoPlay)}
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white"
+              className="rounded-full h-10 w-10 bg-white shadow-sm"
               aria-label={autoPlay ? "Pause autoplay" : "Play autoplay"}
             >
               {autoPlay ? (
@@ -313,20 +206,24 @@ const Expertise: React.FC = () => {
                 <span className="h-0 w-0 border-l-[10px] border-l-primary border-y-[6px] border-y-transparent ml-1"></span>
               )}
             </Button>
+            
+            {/* Previous Button */}
             <Button 
               onClick={handlePrevClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white"
+              className="rounded-full h-10 w-10 bg-white shadow-sm"
             >
               <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">Previous</span>
             </Button>
+            
+            {/* Next Button */}
             <Button 
               onClick={handleNextClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white"
+              className="rounded-full h-10 w-10 bg-white shadow-sm"
             >
               <ArrowRight className="h-5 w-5" />
               <span className="sr-only">Next</span>
