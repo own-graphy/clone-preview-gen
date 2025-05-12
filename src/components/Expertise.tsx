@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
@@ -161,6 +162,7 @@ const Expertise: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [visibleCards, setVisibleCards] = useState<ExpertiseCardProps[]>([]);
   const [centerIndex, setCenterIndex] = useState(2); // Center card index (0-based)
+  const [autoPlay, setAutoPlay] = useState(true);
   
   // Calculate visible cards and their sizes
   useEffect(() => {
@@ -191,6 +193,21 @@ const Expertise: React.FC = () => {
     
     setVisibleCards(newVisibleCards);
   }, [selectedCard]);
+
+  // Auto-play functionality
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (autoPlay) {
+      interval = setInterval(() => {
+        handleNextClick();
+      }, 5000); // Change slide every 5 seconds
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [autoPlay, selectedCard]);
   
   const handleCardClick = (id: string) => {
     setSelectedCard(id);
@@ -283,6 +300,19 @@ const Expertise: React.FC = () => {
           
           {/* Controls */}
           <div className="absolute bottom-0 left-0 right-0 flex justify-center mt-6 mb-4 space-x-4">
+            <Button 
+              onClick={() => setAutoPlay(!autoPlay)}
+              variant="outline" 
+              size="icon" 
+              className="rounded-full h-10 w-10 bg-white"
+              aria-label={autoPlay ? "Pause autoplay" : "Play autoplay"}
+            >
+              {autoPlay ? (
+                <span className="h-3 w-3 bg-primary block"></span>
+              ) : (
+                <span className="h-0 w-0 border-l-[10px] border-l-primary border-y-[6px] border-y-transparent ml-1"></span>
+              )}
+            </Button>
             <Button 
               onClick={handlePrevClick} 
               variant="outline" 
