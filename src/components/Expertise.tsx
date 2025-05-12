@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 import ExpertiseCard, { ExpertiseCardProps } from './ExpertiseCard';
@@ -69,37 +69,46 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
 ];
 
 const Expertise: React.FC = () => {
-  const [selectedCard, setSelectedCard] = useState<string>('3'); // Start with middle card
+  const [selectedCard, setSelectedCard] = useState<string>('4'); // Start with a middle card
   const [autoPlay, setAutoPlay] = useState<boolean>(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [visibleCardIds, setVisibleCardIds] = useState<string[]>([]);
   
-  // Visible cards in display (5 cards including center and edges)
-  const [visibleCards, setVisibleCards] = useState<ExpertiseCardProps[]>([]);
-  
-  // Calculate visible cards based on selected card
-  useEffect(() => {
-    const selectedIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
-    let cards: ExpertiseCardProps[] = [];
-    
-    // Get 2 cards before
-    for (let i = selectedIndex - 2; i < selectedIndex; i++) {
-      const index = i < 0 ? EXPERTISE_CARDS.length + i : i;
-      cards.push(EXPERTISE_CARDS[index]);
-    }
-    
-    // Add selected card
-    cards.push(EXPERTISE_CARDS[selectedIndex]);
-    
-    // Get 2 cards after
-    for (let i = selectedIndex + 1; i <= selectedIndex + 2; i++) {
-      const index = i >= EXPERTISE_CARDS.length ? i - EXPERTISE_CARDS.length : i;
-      cards.push(EXPERTISE_CARDS[index]);
-    }
-    
-    setVisibleCards(cards);
+  // Move to next card
+  const handleNextClick = useCallback(() => {
+    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    const nextIndex = (currentIndex + 1) % EXPERTISE_CARDS.length;
+    setSelectedCard(EXPERTISE_CARDS[nextIndex].id);
   }, [selectedCard]);
   
-  // Auto-play functionality
+  // Move to previous card
+  const handlePrevClick = useCallback(() => {
+    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    const prevIndex = currentIndex > 0 ? currentIndex - 1 : EXPERTISE_CARDS.length - 1;
+    setSelectedCard(EXPERTISE_CARDS[prevIndex].id);
+  }, [selectedCard]);
+  
+  // Update visible cards whenever selected card changes
+  useEffect(() => {
+    const selectedIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    const totalCards = EXPERTISE_CARDS.length;
+    
+    // Calculate indices for the 5 visible cards
+    const farLeftIndex = (selectedIndex - 2 + totalCards) % totalCards;
+    const leftIndex = (selectedIndex - 1 + totalCards) % totalCards;
+    const rightIndex = (selectedIndex + 1) % totalCards;
+    const farRightIndex = (selectedIndex + 2) % totalCards;
+    
+    // Get the IDs of the cards to show
+    setVisibleCardIds([
+      EXPERTISE_CARDS[farLeftIndex].id, 
+      EXPERTISE_CARDS[leftIndex].id,
+      selectedCard,
+      EXPERTISE_CARDS[rightIndex].id,
+      EXPERTISE_CARDS[farRightIndex].id
+    ]);
+  }, [selectedCard]);
+  
+  // Autoplay
   useEffect(() => {
     if (!autoPlay) return;
     
@@ -108,81 +117,64 @@ const Expertise: React.FC = () => {
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [autoPlay, selectedCard]);
+  }, [autoPlay, handleNextClick]);
   
-  // Navigation
-  const handleNextClick = () => {
-    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
-    const nextIndex = (currentIndex + 1) % EXPERTISE_CARDS.length;
-    setSelectedCard(EXPERTISE_CARDS[nextIndex].id);
-  };
-  
-  const handlePrevClick = () => {
-    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : EXPERTISE_CARDS.length - 1;
-    setSelectedCard(EXPERTISE_CARDS[prevIndex].id);
-  };
-  
-  // Calculate card's visual state based on its position
-  const getCardVisualState = (index: number): 'small' | 'medium' | 'large' => {
+  // Get card position type based on its index in the visible array
+  const getCardPosition = (cardId: string): 'far-left' | 'left' | 'center' | 'right' | 'far-right' => {
+    const index = visibleCardIds.indexOf(cardId);
     switch (index) {
-      case 0: // Far left
-      case 4: // Far right
-        return 'small';
-      case 1: // Left
-      case 3: // Right
-        return 'medium';
-      case 2: // Center
-        return 'large';
-      default:
-        return 'small';
+      case 0: return 'far-left';
+      case 1: return 'left';
+      case 2: return 'center';
+      case 3: return 'right';
+      case 4: return 'far-right';
+      default: return 'far-left'; // Fallback
     }
   };
   
   return (
-    <div className="py-12 bg-gray-50">
+    <div className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center">Our Expertise</h2>
-        <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           Explore our latest insights and research across different industries and capabilities
         </p>
         
-        {/* Card Carousel Container - 50vh height */}
-        <div className="relative" style={{ height: '50vh', maxHeight: '50vh' }}>
-          <div className="flex items-center justify-center h-full overflow-hidden">
-            {/* Cards Container */}
-            <div className="relative flex items-center justify-center">
-              {visibleCards.map((card, index) => {
-                const isCenter = index === 2;
-                const visualState = getCardVisualState(index);
+        {/* Carousel Container with fixed 50vh height */}
+        <div className="relative h-[50vh] max-h-[600px] min-h-[400px]">
+          {/* Cards Container */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
+            <div className="relative flex items-center justify-center h-full">
+              {/* Only render visible cards for better performance */}
+              {EXPERTISE_CARDS.filter(card => visibleCardIds.includes(card.id)).map((card) => {
+                const position = getCardPosition(card.id);
                 
-                // Calculate position and style based on index
-                const getCardStyle = () => {
-                  // Base width depends on position
-                  const baseWidth = isCenter ? 340 : index === 1 || index === 3 ? 280 : 240;
-                  
-                  // Calculate horizontal offset 
-                  const offsetX = (index - 2) * 120; // 120px offset between cards
-                  
-                  return {
-                    width: `${baseWidth}px`,
-                    transform: `translateX(${offsetX}px)`,
-                    zIndex: 10 - Math.abs(index - 2),
-                    transition: 'all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1.0)'
-                  };
+                // Calculate horizontal position based on card's position in carousel
+                const getTransformX = () => {
+                  switch (position) {
+                    case 'far-left': return '-500px';
+                    case 'left': return '-250px';
+                    case 'center': return '0px';
+                    case 'right': return '250px';
+                    case 'far-right': return '500px';
+                    default: return '0px';
+                  }
                 };
                 
                 return (
                   <div
-                    key={`${card.id}-${index}`}
-                    className="absolute transition-all duration-500 ease-in-out"
-                    style={getCardStyle()}
+                    key={card.id}
+                    className="absolute transition-all duration-500 ease-out"
+                    style={{ 
+                      transform: `translateX(${getTransformX()})`,
+                      width: position === 'center' ? '320px' : '280px'
+                    }}
                   >
                     <ExpertiseCard
                       card={card}
                       isSelected={selectedCard === card.id}
                       onClick={() => setSelectedCard(card.id)}
-                      visualState={visualState}
+                      cardPosition={position}
                     />
                   </div>
                 );
@@ -191,7 +183,7 @@ const Expertise: React.FC = () => {
           </div>
           
           {/* Controls */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-4">
             {/* Play/Pause Button */}
             <Button 
               onClick={() => setAutoPlay(!autoPlay)}
@@ -207,7 +199,7 @@ const Expertise: React.FC = () => {
               )}
             </Button>
             
-            {/* Previous Button */}
+            {/* Navigation Buttons */}
             <Button 
               onClick={handlePrevClick} 
               variant="outline" 
@@ -218,7 +210,6 @@ const Expertise: React.FC = () => {
               <span className="sr-only">Previous</span>
             </Button>
             
-            {/* Next Button */}
             <Button 
               onClick={handleNextClick} 
               variant="outline" 
