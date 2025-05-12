@@ -18,49 +18,27 @@ interface CardProps {
   card: ExpertiseCardProps;
   isSelected: boolean;
   onClick: () => void;
-  cardPosition: 'far-left' | 'left' | 'center' | 'right' | 'far-right';
 }
 
-const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick, cardPosition }) => {
-  // Get card styling based on its position
-  const getCardClass = () => {
-    // Base classes for all cards
-    const baseClass = "rounded-none overflow-hidden border border-gray-200 transition-all duration-500 ease-out shadow-sm";
-    
-    // Position-specific styling
-    switch (cardPosition) {
-      case 'far-left':
-        return `${baseClass} opacity-60 scale-[0.85] z-10`;
-      case 'left':
-        return `${baseClass} opacity-75 scale-[0.9] z-20`;
-      case 'center':
-        return `${baseClass} opacity-100 scale-[1.02] shadow-lg z-30`;
-      case 'right':
-        return `${baseClass} opacity-75 scale-[0.9] z-20`;
-      case 'far-right':
-        return `${baseClass} opacity-60 scale-[0.85] z-10`;
-      default:
-        return baseClass;
-    }
-  };
-  
-  // Hide/show content based on selection state
+const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick }) => {
+  // Handle content visibility based on selection state
   const contentVisibilityClass = isSelected 
-    ? "opacity-100 max-h-[200px] translate-y-0 transition-all duration-300 ease-in-out" 
-    : "opacity-0 max-h-0 -translate-y-4 overflow-hidden transition-all duration-300 ease-in-out";
+    ? "opacity-100 max-h-[200px] transition-all duration-500 ease-out" 
+    : "opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-out";
 
   return (
     <div 
-      className={`expertise-card cursor-pointer bg-white h-full ${getCardClass()}`}
+      className={`expertise-card cursor-pointer bg-white h-full w-full border border-gray-200 shadow-sm 
+        transition-all duration-300 ${isSelected ? 'shadow-lg' : ''}`}
       onClick={onClick}
     >
       <div className="flex flex-col h-full">
         {/* Image */}
-        <div className="relative h-[240px] overflow-hidden">
+        <div className="relative h-[260px] overflow-hidden">
           <img
             src={card.image}
             alt={card.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover transition-transform duration-500 ease-out"
           />
         </div>
         
@@ -70,7 +48,7 @@ const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick, cardPos
         </div>
         
         {/* Content */}
-        <div className="px-5 pb-4 flex flex-col flex-grow">
+        <div className="px-5 pb-5 flex flex-col flex-grow">
           {/* Type and Date */}
           <div className="flex items-center justify-between my-2">
             <div className="text-xs font-medium text-gray-500 uppercase">{card.type}</div>
@@ -78,7 +56,7 @@ const ExpertiseCard: React.FC<CardProps> = ({ card, isSelected, onClick, cardPos
           </div>
           
           {/* Title */}
-          <h3 className="text-lg font-bold mb-2 line-clamp-3 text-gray-900">{card.title}</h3>
+          <h3 className="text-lg font-bold mb-3 line-clamp-3 text-gray-900">{card.title}</h3>
           
           {/* Description - shown only when selected */}
           <div className={contentVisibilityClass}>

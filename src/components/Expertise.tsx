@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 import ExpertiseCard, { ExpertiseCardProps } from './ExpertiseCard';
@@ -69,10 +69,14 @@ const EXPERTISE_CARDS: ExpertiseCardProps[] = [
 ];
 
 const Expertise: React.FC = () => {
-  const [selectedCard, setSelectedCard] = useState<string>('4'); // Start with a middle card
+  const [selectedCard, setSelectedCard] = useState<string>('1');
   const [autoPlay, setAutoPlay] = useState<boolean>(true);
-  const [visibleCardIds, setVisibleCardIds] = useState<string[]>([]);
-  
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [dragStartX, setDragStartX] = useState<number>(0);
+  const [dragDistance, setDragDistance] = useState<number>(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number | null>(null);
+
   // Move to next card
   const handleNextClick = useCallback(() => {
     const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
@@ -87,27 +91,38 @@ const Expertise: React.FC = () => {
     setSelectedCard(EXPERTISE_CARDS[prevIndex].id);
   }, [selectedCard]);
   
-  // Update visible cards whenever selected card changes
-  useEffect(() => {
-    const selectedIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
-    const totalCards = EXPERTISE_CARDS.length;
+  // Mouse/Touch drag functionality
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true);
+    setDragStartX(clientX);
+    setDragDistance(0);
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging) return;
+    const distance = clientX - dragStartX;
+    setDragDistance(distance);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
     
-    // Calculate indices for the 5 visible cards
-    const farLeftIndex = (selectedIndex - 2 + totalCards) % totalCards;
-    const leftIndex = (selectedIndex - 1 + totalCards) % totalCards;
-    const rightIndex = (selectedIndex + 1) % totalCards;
-    const farRightIndex = (selectedIndex + 2) % totalCards;
+    // If dragged left (negative distance) more than threshold, go to next
+    if (dragDistance < -70) {
+      handleNextClick();
+    } 
+    // If dragged right (positive distance) more than threshold, go to prev
+    else if (dragDistance > 70) {
+      handlePrevClick();
+    }
     
-    // Get the IDs of the cards to show
-    setVisibleCardIds([
-      EXPERTISE_CARDS[farLeftIndex].id, 
-      EXPERTISE_CARDS[leftIndex].id,
-      selectedCard,
-      EXPERTISE_CARDS[rightIndex].id,
-      EXPERTISE_CARDS[farRightIndex].id
-    ]);
-  }, [selectedCard]);
-  
+    setDragDistance(0);
+  };
+
   // Autoplay
   useEffect(() => {
     if (!autoPlay) return;
@@ -118,20 +133,42 @@ const Expertise: React.FC = () => {
     
     return () => clearInterval(interval);
   }, [autoPlay, handleNextClick]);
-  
-  // Get card position type based on its index in the visible array
-  const getCardPosition = (cardId: string): 'far-left' | 'left' | 'center' | 'right' | 'far-right' => {
-    const index = visibleCardIds.indexOf(cardId);
-    switch (index) {
-      case 0: return 'far-left';
-      case 1: return 'left';
-      case 2: return 'center';
-      case 3: return 'right';
-      case 4: return 'far-right';
-      default: return 'far-left'; // Fallback
+
+  // Get card position for positioning in the carousel
+  const getCardStyles = (index: number) => {
+    const currentIndex = EXPERTISE_CARDS.findIndex(card => card.id === selectedCard);
+    const totalCards = EXPERTISE_CARDS.length;
+    
+    // Calculate the relative position adjusting for wrap-around
+    let relativePos = (index - currentIndex + totalCards) % totalCards;
+    if (relativePos > totalCards / 2) relativePos -= totalCards;
+    
+    const baseZIndex = 10;
+    const cardWidth = 300; // Base card width
+    const gapWidth = 20;  // Gap between cards
+    
+    // Calculate transform values based on position
+    let translateX = relativePos * (cardWidth + gapWidth);
+    // Apply drag distance if currently dragging
+    if (isDragging) {
+      translateX += dragDistance;
     }
+    
+    // Calculate scale and opacity based on distance from center
+    const distance = Math.abs(relativePos);
+    const scale = distance === 0 ? 1 : 0.9 - (distance * 0.05);
+    const opacity = distance === 0 ? 1 : 0.7 - (distance * 0.1);
+    const zIndex = baseZIndex - distance;
+
+    return {
+      transform: `translateX(calc(${translateX}px))`,
+      scale: scale.toString(),
+      opacity: opacity,
+      zIndex: zIndex,
+      width: cardWidth,
+    };
   };
-  
+
   return (
     <div className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -140,62 +177,59 @@ const Expertise: React.FC = () => {
           Explore our latest insights and research across different industries and capabilities
         </p>
         
-        {/* Carousel Container with fixed 50vh height */}
-        <div className="relative h-[50vh] max-h-[600px] min-h-[400px]">
+        {/* Carousel Container */}
+        <div 
+          className="relative h-[500px] max-w-[1200px] mx-auto overflow-hidden"
+          ref={carouselRef}
+          onMouseDown={(e) => handleDragStart(e.clientX)}
+          onMouseMove={(e) => handleDragMove(e.clientX)}
+          onMouseUp={() => handleDragEnd()}
+          onMouseLeave={() => handleDragEnd()}
+          onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+          onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+          onTouchEnd={() => handleDragEnd()}
+        >
           {/* Cards Container */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
-            <div className="relative flex items-center justify-center h-full">
-              {/* Only render visible cards for better performance */}
-              {EXPERTISE_CARDS.filter(card => visibleCardIds.includes(card.id)).map((card) => {
-                const position = getCardPosition(card.id);
-                
-                // Calculate horizontal position based on card's position in carousel
-                const getTransformX = () => {
-                  switch (position) {
-                    case 'far-left': return '-500px';
-                    case 'left': return '-250px';
-                    case 'center': return '0px';
-                    case 'right': return '250px';
-                    case 'far-right': return '500px';
-                    default: return '0px';
-                  }
-                };
-                
-                return (
-                  <div
-                    key={card.id}
-                    className="absolute transition-all duration-500 ease-out"
-                    style={{ 
-                      transform: `translateX(${getTransformX()})`,
-                      width: position === 'center' ? '320px' : '280px'
-                    }}
-                  >
-                    <ExpertiseCard
-                      card={card}
-                      isSelected={selectedCard === card.id}
-                      onClick={() => setSelectedCard(card.id)}
-                      cardPosition={position}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full">
+            {EXPERTISE_CARDS.map((card, index) => {
+              const styles = getCardStyles(index);
+              
+              return (
+                <div
+                  key={card.id}
+                  className="absolute transition-all duration-500 ease-out transform-gpu"
+                  style={{ 
+                    transform: styles.transform,
+                    width: `${styles.width}px`,
+                    zIndex: styles.zIndex,
+                    opacity: styles.opacity,
+                    scale: styles.scale
+                  }}
+                >
+                  <ExpertiseCard
+                    card={card}
+                    isSelected={selectedCard === card.id}
+                    onClick={() => setSelectedCard(card.id)}
+                  />
+                </div>
+              );
+            })}
           </div>
           
-          {/* Controls */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-4">
+          {/* Controls positioned at bottom-left */}
+          <div className="absolute bottom-4 left-8 flex items-center space-x-3">
             {/* Play/Pause Button */}
             <Button 
               onClick={() => setAutoPlay(!autoPlay)}
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white shadow-sm"
+              className="rounded-full h-9 w-9 bg-white shadow-sm flex items-center justify-center"
               aria-label={autoPlay ? "Pause autoplay" : "Play autoplay"}
             >
               {autoPlay ? (
-                <span className="h-3 w-3 bg-primary block"></span>
+                <div className="h-3 w-3 bg-primary" />
               ) : (
-                <span className="h-0 w-0 border-l-[10px] border-l-primary border-y-[6px] border-y-transparent ml-1"></span>
+                <div className="h-0 w-0 border-l-[8px] border-l-primary border-y-[5px] border-y-transparent ml-1" />
               )}
             </Button>
             
@@ -204,9 +238,9 @@ const Expertise: React.FC = () => {
               onClick={handlePrevClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white shadow-sm"
+              className="rounded-full h-9 w-9 bg-white shadow-sm flex items-center justify-center"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4" />
               <span className="sr-only">Previous</span>
             </Button>
             
@@ -214,9 +248,9 @@ const Expertise: React.FC = () => {
               onClick={handleNextClick} 
               variant="outline" 
               size="icon" 
-              className="rounded-full h-10 w-10 bg-white shadow-sm"
+              className="rounded-full h-9 w-9 bg-white shadow-sm flex items-center justify-center"
             >
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4" />
               <span className="sr-only">Next</span>
             </Button>
           </div>
